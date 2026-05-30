@@ -642,14 +642,34 @@
 
   function mdToHtml(md) {
     if (!md) return '';
-    // Basic markdown: convert bullet lists and bold
-    return md
+    const lines = md.split('\n');
+    let html = '', inList = false;
+    const inline = s => s
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-*] (.+)/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
-      .replace(/\n{2,}/g, '</p><p>')
-      .replace(/^(?!<[ul])(.*)/gm, (_, l) => l.trim() ? l : '')
-      .trim();
+      .replace(/`([^`]+)`/g, '<code style="font-size:12px;background:#f3f4f6;padding:1px 5px;border-radius:4px;font-family:monospace">$1</code>');
+
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line) continue;
+      // skip top-level and version headings (# Changelog, ## [1.0.0])
+      if (/^#{1,2}[\s\[]/.test(line)) continue;
+      // sub-section heading (### Features)
+      if (/^###\s+/.test(line)) {
+        if (inList) { html += '</ul>'; inList = false; }
+        html += `<p style="font-weight:650;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#9ca3af;margin:14px 0 6px">${line.replace(/^###\s+/, '')}</p>`;
+        continue;
+      }
+      // bullet list item
+      if (/^[-*]\s+/.test(line)) {
+        if (!inList) { html += '<ul>'; inList = true; }
+        html += `<li>${inline(line.replace(/^[-*]\s+/, ''))}</li>`;
+        continue;
+      }
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<p>${inline(line)}</p>`;
+    }
+    if (inList) html += '</ul>';
+    return html;
   }
 
   fetch('https://api.github.com/repos/raghav4/ZenTube/releases?per_page=5')
