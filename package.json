@@ -9,7 +9,7 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "^8.0.0",
-    "release-it": "^17.0.0"
+    "@release-it/conventional-changelog": "^11.0.1",
+    "release-it": "^20.2.0"
   }
 }
