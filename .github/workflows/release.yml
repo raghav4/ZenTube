@@ -28,18 +28,20 @@ jobs:
       - name: Extract release notes from CHANGELOG
         id: notes
         run: |
-          # Pull the section for this version out of CHANGELOG.md
-          notes=$(awk '/^## \[/{if(found) exit; found=1; next} found{print}' CHANGELOG.md)
-          {
-            echo "body<<EOF"
-            echo "$notes"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+          notes=$(awk '/^## \[/{if(found) exit; found=1; next} found{print}' CHANGELOG.md | sed '/^[[:space:]]*$/d')
+          if [ -n "$notes" ]; then
+            { echo "body<<EOF"; echo "$notes"; echo "EOF"; } >> "$GITHUB_OUTPUT"
+            echo "auto=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "body=" >> "$GITHUB_OUTPUT"
+            echo "auto=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: "ZenTube ${{ github.ref_name }}"
           body: ${{ steps.notes.outputs.body }}
+          generate_release_notes: ${{ steps.notes.outputs.auto }}
           files: zentube-${{ github.ref_name }}.zip
           make_latest: true
