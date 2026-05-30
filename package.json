@@ -1,0 +1,15 @@
+{
+  "name": "zentube",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Distraction-free YouTube Chrome extension",
+  "scripts": {
+    "icons": "node generate-icons.js",
+    "package": "zip -r zentube.zip manifest.json content.js content.css popup.html popup.js icons/ --exclude '*.DS_Store'",
+    "release": "release-it"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^8.0.0",
+    "release-it": "^17.0.0"
+  }
+}
