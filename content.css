@@ -1,0 +1,90 @@
+/*
+ * Selectors use `html.dfyt-*` — classes are on document.documentElement,
+ * which persists through YouTube's SPA navigation unlike body.
+ */
+
+/* ── Notification Bell ── */
+html.dfyt-hide-notification-bell #notification-button,
+html.dfyt-hide-notification-bell ytd-notification-topbar-button-renderer {
+  display: none !important;
+}
+
+/* ── Homepage Feed ── */
+html.dfyt-hide-feed ytd-browse[page-subtype="home"] #primary,
+html.dfyt-hide-feed ytd-browse[page-subtype="home"] ytd-rich-grid-renderer {
+  display: none !important;
+}
+
+/* ── Shorts Videos in feed ── */
+html.dfyt-hide-shorts-videos ytd-reel-shelf-renderer,
+html.dfyt-hide-shorts-videos ytd-rich-section-renderer:has(ytd-reel-shelf-renderer),
+html.dfyt-hide-shorts-videos ytd-rich-shelf-renderer[is-shorts],
+html.dfyt-hide-shorts-videos ytd-shorts,
+html.dfyt-hide-shorts-videos ytd-video-renderer[is-short] {
+  display: none !important;
+}
+
+/* ── Shorts Tab — left sidebar + mini guide ── */
+html.dfyt-hide-shorts-tab ytd-guide-entry-renderer:has(a[href="/shorts"]),
+html.dfyt-hide-shorts-tab ytd-mini-guide-entry-renderer:has(a[href="/shorts"]),
+html.dfyt-hide-shorts-tab ytd-guide-entry-renderer:has(a[title="Shorts"]),
+html.dfyt-hide-shorts-tab ytd-mini-guide-entry-renderer:has(a[title="Shorts"]) {
+  display: none !important;
+}
+
+/* ── Subscriptions Tab + entire Subscriptions sidebar section ── */
+/* The nav entry linking to /feed/subscriptions */
+html.dfyt-hide-subscriptions-tab ytd-guide-entry-renderer:has(a[href="/feed/subscriptions"]),
+html.dfyt-hide-subscriptions-tab ytd-mini-guide-entry-renderer:has(a[href="/feed/subscriptions"]),
+/* The collapsible "Subscriptions" section with channel list */
+html.dfyt-hide-subscriptions-tab ytd-guide-section-renderer:has(a[href="/feed/subscriptions"]),
+html.dfyt-hide-subscriptions-tab ytd-guide-collapsible-section-entry-renderer:has(a[href="/feed/subscriptions"]),
+/* The channel rows inside the subscriptions section */
+html.dfyt-hide-subscriptions-tab ytd-guide-section-renderer:has(ytd-guide-entry-renderer a[href^="/@"]),
+html.dfyt-hide-subscriptions-tab ytd-guide-section-renderer:has(ytd-guide-entry-renderer a[href^="/channel/"]) {
+  display: none !important;
+}
+
+/* ── Show Only Library — hide everything except Library section ── */
+html.dfyt-show-only-library ytd-guide-section-renderer:not(:has(a[href="/feed/library"])):not(:has(a[href="/feed/history"])):not(:has(a[href^="/playlist"])) {
+  display: none !important;
+}
+
+/* ── Related Videos end screen ── */
+html.dfyt-hide-related-videos .html5-endscreen,
+html.dfyt-hide-related-videos .ytp-endscreen-content,
+html.dfyt-hide-related-videos ytd-endscreen-renderer {
+  display: none !important;
+}
+
+/* ── Sidebar Related Videos ── */
+html.dfyt-hide-sidebar-related ytd-watch-next-secondary-results-renderer,
+html.dfyt-hide-sidebar-related #secondary ytd-compact-video-renderer,
+html.dfyt-hide-sidebar-related #secondary ytd-shelf-renderer {
+  display: none !important;
+}
+
+/* ── Sidebar Live Chat ── */
+html.dfyt-hide-sidebar-live-chat ytd-live-chat-frame,
+html.dfyt-hide-sidebar-live-chat #chat,
+html.dfyt-hide-sidebar-live-chat #chat-container {
+  display: none !important;
+}
+
+/* ── Sidebar Playlists ── */
+html.dfyt-hide-sidebar-playlists ytd-playlist-panel-renderer {
+  display: none !important;
+}
+
+/* ── Merch ── */
+html.dfyt-hide-merch ytd-merch-shelf-renderer,
+html.dfyt-hide-merch ytd-product-details-renderer {
+  display: none !important;
+}
+
+/* ── Comments ── */
+html.dfyt-hide-comments #comments,
+html.dfyt-hide-comments ytd-comments,
+html.dfyt-hide-comments ytd-comment-thread-renderer {
+  display: none !important;
+}

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ZenTube</title>
+  <style>
+    :root {
+      --bg: #fff;
+      --bg-muted: #f9fafb;
+      --bg-hover: #f3f4f6;
+      --border: #e5e7eb;
+      --border-md: #d1d5db;
+      --text: #111827;
+      --text-2: #374151;
+      --text-muted: #6b7280;
+      --text-subtle: #9ca3af;
+      --primary: #18181b;
+      --red: #dc2626;
+      --green: #16a34a;
+      --green-bg: #f0fdf4;
+      --green-border: #bbf7d0;
+      --r: 10px;
+      --r-sm: 6px;
+      --r-xs: 4px;
+      --r-pill: 999px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      width: 340px;
+      -webkit-font-smoothing: antialiased;
+      font-size: 13px;
+    }
+
+    /* ─── Header ─── */
+    .header {
+      padding: 13px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .logo img { width: 32px; height: 32px; display: block; }
+
+    .brand-name {
+      font-size: 14px;
+      font-weight: 650;
+      color: var(--text);
+      letter-spacing: -0.35px;
+      line-height: 1;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-subtle);
+      margin-top: 2px;
+      line-height: 1;
+    }
+
+    /* ─── Master switch ─── */
+    .master-area {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .master-lbl {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-subtle);
+      min-width: 18px;
+      text-align: right;
+      transition: color 0.15s;
+    }
+    .master-lbl.on { color: var(--text-2); }
+
+    /* ─── Toggle switch ─── */
+    .sw { position: relative; display: inline-flex; flex-shrink: 0; cursor: pointer; }
+    .sw input { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+
+    .sw-track {
+      width: 36px; height: 20px;
+      background: var(--border-md);
+      border-radius: 10px;
+      position: relative;
+      transition: background 0.14s;
+    }
+    .sw-track::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      top: 2px; left: 2px;
+      transition: transform 0.14s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.22), 0 0 0 .5px rgba(0,0,0,.06);
+    }
+    .sw input:checked + .sw-track { background: var(--primary); }
+    .sw input:checked + .sw-track::after { transform: translateX(16px); }
+
+    /* Larger variant for master */
+    .sw-lg .sw-track { width: 42px; height: 23px; border-radius: 11.5px; }
+    .sw-lg .sw-track::after { width: 19px; height: 19px; }
+    .sw-lg input:checked + .sw-track::after { transform: translateX(19px); }
+
+    /* ─── Divider ─── */
+    .hr { height: 1px; background: var(--border); }
+
+    /* ─── Focus stat strip ─── */
+    .stat {
+      padding: 8px 15px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--green-bg);
+      border-bottom: 1px solid var(--green-border);
+    }
+    .stat svg { color: var(--green); flex-shrink: 0; }
+    .stat-text { font-size: 11.5px; font-weight: 500; color: #15803d; }
+    .stat-text b { font-weight: 700; }
+    .stat.hidden { display: none; }
+
+    /* ─── Presets ─── */
+    .presets {
+      padding: 10px 15px;
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preset {
+      flex: 1;
+      padding: 5px 8px;
+      font-size: 11.5px;
+      font-weight: 550;
+      font-family: inherit;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-pill);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.1s;
+      line-height: 1.2;
+    }
+    .preset:hover { background: var(--bg-hover); border-color: var(--border-md); color: var(--text-2); }
+    .preset.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .preset-sub { font-size: 9px; font-weight: 400; opacity: 0.75; display: block; margin-top: 1px; }
+
+    /* ─── Settings body ─── */
+    .settings {
+      padding: 10px 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: opacity 0.18s;
+    }
+    .settings.dim { opacity: 0.35; pointer-events: none; }
+
+    /* ─── Card ─── */
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .card-hd {
+      padding: 7px 12px;
+      background: var(--bg-muted);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.08s;
+    }
+    .card-hd:hover { background: var(--bg-hover); }
+    .card-hd:hover .hd-action { opacity: 1; }
+
+    .hd-label {
+      font-size: 10px;
+      font-weight: 650;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+    }
+
+    .hd-action {
+      font-size: 10px;
+      font-weight: 550;
+      color: var(--text-subtle);
+      opacity: 0;
+      transition: opacity 0.1s;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    /* ─── Row ─── */
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 12px;
+      gap: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.07s;
+    }
+    .row:last-child { border-bottom: none; }
+    .row:hover { background: var(--bg-muted); }
+    .row:active { background: var(--bg-hover); }
+
+    .row-lbl {
+      font-size: 12.5px;
+      font-weight: 440;
+      color: var(--text-2);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex: 1;
+      user-select: none;
+      line-height: 1.35;
+    }
+
+    .badge {
+      font-size: 9px;
+      font-weight: 600;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      border-radius: var(--r-xs);
+      padding: 1px 4px;
+      flex-shrink: 0;
+    }
+
+    /* ─── Footer ─── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .saved {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0;
+      transition: opacity 0.22s;
+    }
+    .saved.show { opacity: 1; }
+
+    .row-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      color: var(--text-subtle);
+    }
+
+    /* ─── Daily limit ─── */
+    .limit-row {
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .limit-lbl {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 550;
+      color: var(--text-2);
+      flex-shrink: 0;
+    }
+
+    .limit-pills {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .lpill {
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 550;
+      font-family: inherit;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.1s;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .lpill:hover { border-color: var(--border-md); color: var(--text-2); background: var(--bg-muted); }
+    .lpill.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    .lcustom {
+      width: 40px;
+      padding: 3px 5px;
+      font-size: 11px;
+      font-weight: 550;
+      font-family: inherit;
+      color: var(--text-2);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.1s;
+      -moz-appearance: textfield;
+    }
+    .lcustom::-webkit-inner-spin-button,
+    .lcustom::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .lcustom:focus { border-color: var(--primary); }
+    .lcustom::placeholder { color: var(--text-subtle); font-weight: 400; }
+    .lcustom.has-value { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .lcustom.has-value::placeholder { color: rgba(255,255,255,.5); }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">
+      <img id="logoImg" src="icons/icon48.png" alt="ZenTube">
+    </div>
+    <div>
+      <div class="brand-name">ZenTube</div>
+      <div class="brand-sub" id="brandSub">Loading…</div>
+    </div>
+  </div>
+  <div class="master-area">
+    <span class="master-lbl" id="masterLbl">Off</span>
+    <label class="sw sw-lg">
+      <input type="checkbox" id="enabled">
+      <span class="sw-track"></span>
+    </label>
+  </div>
+</div>
+
+<div class="hr"></div>
+
+<!-- Focus time stat -->
+<div class="stat hidden" id="statBar">
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+  </svg>
+  <span class="stat-text" id="statText"></span>
+</div>
+
+<!-- Presets -->
+<div class="presets">
+  <button class="preset" data-preset="light">
+    Light
+    <span class="preset-sub">Just the basics</span>
+  </button>
+  <button class="preset" data-preset="balanced">
+    Balanced
+    <span class="preset-sub">Recommended</span>
+  </button>
+  <button class="preset" data-preset="zen">
+    Zen
+    <span class="preset-sub">Deep focus</span>
+  </button>
+</div>
+
+<!-- Daily limit -->
+<div class="limit-row" id="limitRow">
+  <span class="limit-lbl">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+    </svg>
+    Daily Limit
+  </span>
+  <div class="limit-pills">
+    <button class="lpill" data-min="0">Off</button>
+    <button class="lpill" data-min="15">15m</button>
+    <button class="lpill" data-min="30">30m</button>
+    <button class="lpill" data-min="60">1 hr</button>
+    <input class="lcustom" id="customLimitInput" type="number" min="1" max="480" placeholder="min">
+  </div>
+</div>
+
+<!-- Settings -->
+<div class="settings" id="settingsArea">
+
+  <div class="card">
+    <div class="card-hd" data-section="navigation">
+      <span class="hd-label">Navigation</span>
+      <span class="hd-action" id="action-navigation">Enable all</span>
+    </div>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Hide Notification Bell
+      </span>
+      <span class="sw"><input type="checkbox" id="hideNotificationBell"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Hide Shorts Tab
+      </span>
+      <span class="sw"><input type="checkbox" id="hideShortsTab"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"/></svg>
+        Hide Subscriptions Tab
+      </span>
+      <span class="sw"><input type="checkbox" id="hideSubscriptionsTab"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+        Show Only Library
+      </span>
+      <span class="sw"><input type="checkbox" id="showOnlyLibrary"><span class="sw-track"></span></span>
+    </label>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" data-section="homepage">
+      <span class="hd-label">Homepage</span>
+      <span class="hd-action" id="action-homepage">Enable all</span>
+    </div>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Hide Feed
+      </span>
+      <span class="sw"><input type="checkbox" id="hideFeed"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/></svg>
+        Hide Shorts Videos <span class="badge">Unstable</span>
+      </span>
+      <span class="sw"><input type="checkbox" id="hideShortsVideos"><span class="sw-track"></span></span>
+    </label>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" data-section="watching">
+      <span class="hd-label">While Watching</span>
+      <span class="hd-action" id="action-watching">Enable all</span>
+    </div>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+        Disable Autoplay
+      </span>
+      <span class="sw"><input type="checkbox" id="disableAutoplay"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Hide End Screen Videos
+      </span>
+      <span class="sw"><input type="checkbox" id="hideRelatedVideos"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+        Hide Sidebar Videos
+      </span>
+      <span class="sw"><input type="checkbox" id="hideSidebarRelated"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        Hide Live Chat
+      </span>
+      <span class="sw"><input type="checkbox" id="hideSidebarLiveChat"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Hide Sidebar Playlists
+      </span>
+      <span class="sw"><input type="checkbox" id="hideSidebarPlaylists"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Hide Merch
+      </span>
+      <span class="sw"><input type="checkbox" id="hideMerch"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Hide Comments
+      </span>
+      <span class="sw"><input type="checkbox" id="hideComments"><span class="sw-track"></span></span>
+    </label>
+    <label class="row">
+      <span class="row-lbl">
+        <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="14" y1="16" x2="20" y2="22"/><line x1="20" y1="16" x2="14" y2="22"/></svg>
+        Disable Playlists
+      </span>
+      <span class="sw"><input type="checkbox" id="disablePlaylists"><span class="sw-track"></span></span>
+    </label>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <span class="saved" id="savedMsg">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    Saved
+  </span>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
