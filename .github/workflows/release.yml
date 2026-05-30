@@ -25,10 +25,21 @@ jobs:
             icons/ \
             --exclude "*.DS_Store"
 
+      - name: Extract release notes from CHANGELOG
+        id: notes
+        run: |
+          # Pull the section for this version out of CHANGELOG.md
+          notes=$(awk '/^## \[/{if(found) exit; found=1; next} found{print}' CHANGELOG.md)
+          {
+            echo "body<<EOF"
+            echo "$notes"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: "ZenTube ${{ github.ref_name }}"
+          body: ${{ steps.notes.outputs.body }}
           files: zentube-${{ github.ref_name }}.zip
-          generate_release_notes: true
           make_latest: true
