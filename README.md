@@ -2,7 +2,7 @@
 
 **Distraction-free YouTube for Chrome.** Hide the feed, kill autoplay, set a daily limit — remove every hook that keeps you watching longer than you meant to.
 
-[**→ Add to Chrome**](CHROME_STORE_URL) &nbsp;·&nbsp; [Website](https://raghavsharma.github.io/zentube/)
+[**→ Add to Chrome**](CHROME_STORE_URL) &nbsp;·&nbsp; [Website](https://raghav4.github.io/ZenTube/)
 
 ---
 
@@ -44,7 +44,7 @@ ZenTube tracks how long you're on YouTube and shows it in the popup: *"42 min fo
 ### From source
 
 ```bash
-git clone https://github.com/raghavsharma/zentube.git
+git clone https://github.com/raghav4/ZenTube.git
 cd zentube
 ```
 

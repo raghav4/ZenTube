@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "A distraction-free YouTube experience",
   "minimum_chrome_version": "105",
-  "homepage_url": "https://raghavsharma.github.io/zentube/",
+  "homepage_url": "https://raghav4.github.io/ZenTube/",
   "permissions": ["storage"],
   "host_permissions": ["*://*.youtube.com/*"],
   "action": {
