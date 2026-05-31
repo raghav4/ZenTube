@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💡 Suggest a feature
+    url: https://github.com/raghav4/ZenTube/discussions/new?category=ideas
+    about: Share ideas and upvote what others have suggested
+  - name: 💬 Ask a question
+    url: https://github.com/raghav4/ZenTube/discussions/new?category=q-a
+    about: Not a bug? Ask here instead
+  - name: ✉️ Contact the maintainer
+    url: mailto:hey@raghavsharma.me
+    about: For anything else

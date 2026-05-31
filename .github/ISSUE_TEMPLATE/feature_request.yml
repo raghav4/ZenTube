@@ -1,0 +1,39 @@
+name: Feature Request
+description: Suggest something you'd like ZenTube to do
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Got an idea? We'd love to hear it. For open discussion and upvoting, try [GitHub Discussions](https://github.com/raghav4/ZenTube/discussions) instead.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: What are you trying to do that ZenTube doesn't currently help with?
+      placeholder: "I keep getting distracted by YouTube comments even when I'm only there to watch one video."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like ZenTube to do?
+      placeholder: "Add an option to collapse comments by default until I manually expand them."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Any alternatives you've considered?
+      placeholder: "I tried hiding comments entirely but I sometimes want to read them."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before submitting
+      options:
+        - label: I've checked this isn't already requested
+          required: true

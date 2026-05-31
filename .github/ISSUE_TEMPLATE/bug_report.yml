@@ -1,0 +1,88 @@
+name: Bug Report
+description: Something isn't working as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. The more detail you provide, the faster it gets fixed.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: "When I enable 'Hide Feed', the feed still shows on the homepage."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How do we see the bug?
+      placeholder: |
+        1. Install ZenTube
+        2. Enable 'Hide Feed'
+        3. Go to youtube.com
+        4. Feed is still visible
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should have happened?
+      placeholder: The homepage feed should be blank.
+    validations:
+      required: true
+
+  - type: input
+    id: youtube_url
+    attributes:
+      label: YouTube URL (if specific to a page)
+      placeholder: "https://www.youtube.com/watch?v=..."
+
+  - type: dropdown
+    id: feature
+    attributes:
+      label: Which feature is affected?
+      options:
+        - Hide Feed
+        - Hide Shorts
+        - Hide Sidebar Videos
+        - Hide Comments
+        - Hide Notification Bell
+        - Hide End Screens
+        - Hide Merch
+        - Hide Live Chat
+        - Hide Subscriptions Tab
+        - Disable Autoplay
+        - Disable Playlists
+        - Daily Time Limit / Timer
+        - Focus Time Tracking
+        - Other / Multiple
+    validations:
+      required: true
+
+  - type: input
+    id: chrome_version
+    attributes:
+      label: Chrome version
+      placeholder: "e.g. 124.0.6367.60"
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or recordings
+      description: Drag and drop images here if helpful.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before submitting
+      options:
+        - label: I've checked that this isn't already reported
+          required: true
+        - label: I'm on Chrome 105 or above
+          required: false

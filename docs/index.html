@@ -507,8 +507,8 @@
     .faq-q:hover { background: var(--bg-card); }
 
     .faq-icon { flex-shrink: 0; color: var(--gray); transition: transform 0.25s; }
-    .faq-icon .faq-h { transition: transform 0.25s; transform-origin: center; }
-    .faq-item.open .faq-icon .faq-h { transform: scaleX(0); }
+    .faq-icon .faq-v { transition: transform 0.25s; transform-origin: center; }
+    .faq-item.open .faq-icon .faq-v { transform: scaleY(0); }
 
     .faq-a {
       display: grid;
@@ -1037,7 +1037,7 @@
     <div class="faq-item">
       <button class="faq-q" aria-expanded="false">
         <span>What makes ZenTube different from other extensions?</span>
-        <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><line class="faq-h" x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+        <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><line class="faq-v" x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
       <div class="faq-a"><p>ZenTube is free forever and open source — every line of code is on <a href="https://github.com/raghav4/ZenTube">GitHub</a>. It also goes further than most with a <strong>daily time limit</strong>: a countdown timer runs in the corner, and when your limit is up the video pauses and a full-screen overlay stops the clock. No other free extension does this.</p></div>
     </div>
@@ -1045,15 +1045,15 @@
     <div class="faq-item">
       <button class="faq-q" aria-expanded="false">
         <span>Will ZenTube always be free?</span>
-        <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><line class="faq-h" x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+        <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><line class="faq-v" x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
-      <div class="faq-a"><p>Yes. ZenTube is open source under the MIT license. It will never go behind a paywall. If it's useful to you, <a href="https://www.buymeacoffee.com/raghavsharma">buying a coffee</a> helps keep it maintained.</p></div>
+      <div class="faq-a"><p>Yes. ZenTube is MIT licensed and will always be free — I built it because I needed it, not to make money. If it's saved you some time and you feel like it, <a href="https://www.buymeacoffee.com/raghavsharma">buying a coffee</a> is a kind gesture, but there's absolutely no pressure.</p></div>
     </div>
 
     <div class="faq-item">
       <button class="faq-q" aria-expanded="false">
         <span>Does ZenTube collect any data?</span>
-        <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><line class="faq-h" x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+        <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><line class="faq-v" x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
       <div class="faq-a"><p>No. ZenTube only runs on YouTube and only reads and writes to your browser's local storage. No accounts, no analytics, no external servers. Your data never leaves your device.</p></div>
     </div>
@@ -1061,7 +1061,7 @@
     <div class="faq-item">
       <button class="faq-q" aria-expanded="false">
         <span>How does the daily time limit work?</span>
-        <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><line class="faq-h" x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+        <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><line class="faq-v" x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
       <div class="faq-a"><p>Set a limit in minutes from the popup (15m, 30m, 1hr, or custom). A countdown timer appears in the corner of every YouTube tab. When time's up, the video pauses and a full-screen overlay appears. You can dismiss it — but you'll know.</p></div>
     </div>
@@ -1069,7 +1069,7 @@
     <div class="faq-item">
       <button class="faq-q" aria-expanded="false">
         <span>Which browsers does ZenTube support?</span>
-        <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><line class="faq-h" x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+        <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><line class="faq-v" x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
       <div class="faq-a"><p>Chrome 105 and above. Any Chromium-based browser (Edge, Brave, Arc) should work — install it via the Chrome Web Store or load unpacked from source.</p></div>
     </div>
