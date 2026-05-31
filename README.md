@@ -1,12 +1,16 @@
 # ZenTube
 
-**Distraction-free YouTube for Chrome.** Hide the feed, kill autoplay, set a daily limit — remove every hook that keeps you watching longer than you meant to.
+I kept opening YouTube for one video and losing the entire evening. Not once — every single time.
 
-[**→ Add to Chrome**](CHROME_STORE_URL) &nbsp;·&nbsp; [Website](https://raghav4.github.io/ZenTube/)
+So I built this.
+
+**ZenTube is a Chrome extension that removes every hook YouTube uses to keep you watching.** Hide the feed, kill autoplay, set a daily limit. Open YouTube with intention, not because the algorithm invited you.
+
+[**→ Add to Chrome**](CHROME_STORE_URL) &nbsp;·&nbsp; [Website](https://raghav4.github.io/ZenTube/) &nbsp;·&nbsp; [Buy me a coffee ☕](https://www.buymeacoffee.com/raghavsharma)
 
 ---
 
-## Features
+## What it does
 
 | Feature | What it does |
 |---|---|
@@ -45,12 +49,12 @@ ZenTube tracks how long you're on YouTube and shows it in the popup: *"42 min fo
 
 ```bash
 git clone https://github.com/raghav4/ZenTube.git
-cd zentube
+cd ZenTube
 ```
 
 1. Open `chrome://extensions`
 2. Enable **Developer mode** (top right)
-3. Click **Load unpacked** → select the `zentube` folder
+3. Click **Load unpacked** → select the `ZenTube` folder
 
 ---
 
@@ -95,6 +99,12 @@ npm run release
 ## Requirements
 
 - Chrome 105+ (uses CSS `:has()`)
+
+---
+
+## Support
+
+If ZenTube helps you reclaim your time, consider [buying me a coffee](https://www.buymeacoffee.com/raghavsharma). It keeps the project going.
 
 ---
 
