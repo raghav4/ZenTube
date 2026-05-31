@@ -1179,7 +1179,10 @@
   fetch('https://api.github.com/repos/raghav4/ZenTube/releases?per_page=5')
     .then(r => r.json())
     .then(releases => {
-      if (!releases.length) { status.textContent = 'No releases yet.'; return; }
+      if (!Array.isArray(releases) || !releases.length) {
+        status.innerHTML = 'Could not load releases. <a href="https://github.com/raghav4/ZenTube/releases" target="_blank" style="color:var(--black);">View on GitHub →</a>';
+        return;
+      }
       status.remove();
       releases.forEach(r => {
         const body = mdToHtml(r.body || '');
@@ -1194,7 +1197,9 @@
         container.appendChild(el);
       });
     })
-    .catch(() => { status.textContent = 'Could not load releases.'; });
+    .catch(() => {
+      status.innerHTML = 'Could not load releases. <a href="https://github.com/raghav4/ZenTube/releases" target="_blank" style="color:var(--black);">View on GitHub →</a>';
+    });
 }());
 </script>
 
