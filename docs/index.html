@@ -3,12 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZenTube — Distraction-free YouTube</title>
-  <meta name="description" content="Block the feed, kill autoplay, set a daily limit. ZenTube removes every hook YouTube uses to keep you watching.">
-  <meta property="og:title" content="ZenTube — Distraction-free YouTube">
-  <meta property="og:description" content="Block the feed, kill autoplay, set a daily limit. ZenTube removes every hook YouTube uses to keep you watching.">
+  <title>ZenTube — Free YouTube Time Limit & Focus Extension for Chrome</title>
+  <meta name="description" content="Set a daily YouTube time limit, hide the feed, kill autoplay. Free forever, open source. The distraction-free YouTube extension that doesn't charge you. The best DF YouTube alternative.">
+  <meta name="keywords" content="youtube time limit extension, distraction free youtube free, dftube alternative, df youtube alternative, hide youtube feed, youtube focus extension, block youtube feed chrome, youtube daily limit, free youtube extension, youtube productivity chrome extension">
+  <meta name="author" content="Raghav Sharma">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://raghav4.github.io/ZenTube/">
+  <meta property="og:title" content="ZenTube — Free YouTube Time Limit & Focus Extension">
+  <meta property="og:description" content="Set a daily YouTube time limit, hide the feed, kill autoplay. Free forever, open source. The distraction-free YouTube extension that doesn't charge you.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://raghav4.github.io/ZenTube/">
+  <meta property="og:site_name" content="ZenTube">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ZenTube — Free YouTube Time Limit & Focus Extension">
+  <meta name="twitter:description" content="Set a daily YouTube time limit, hide the feed, kill autoplay. Free forever, open source. The best free DF YouTube alternative.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ZenTube",
+    "description": "Free YouTube time limit and focus extension for Chrome. Hide the feed, kill autoplay, set a daily time limit with countdown timer. Free forever, open source. The best free DF YouTube alternative.",
+    "applicationCategory": "BrowserApplication",
+    "operatingSystem": "Chrome",
+    "browserRequirements": "Requires Chrome 105 or higher",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "url": "https://raghav4.github.io/ZenTube/",
+    "author": { "@type": "Person", "name": "Raghav Sharma", "url": "https://raghavsharma.me" },
+    "softwareVersion": "1.0.0",
+    "license": "https://opensource.org/licenses/MIT"
+  }
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
@@ -93,11 +117,28 @@
     .btn-add:hover { opacity: 0.82; }
 
     /* ── Hero ── */
+    .hero-wrap {
+      background: #0a0a0a;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-circles {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
     .hero {
       padding: 96px 48px 84px;
       max-width: 900px;
       margin: 0 auto;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-badge {
@@ -105,11 +146,11 @@
       align-items: center;
       gap: 6px;
       padding: 5px 13px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 100px;
       font-size: 12px;
       font-weight: 500;
-      color: var(--gray);
+      color: rgba(255,255,255,0.45);
       margin-bottom: 30px;
       letter-spacing: 0.1px;
     }
@@ -120,13 +161,14 @@
       letter-spacing: -3px;
       line-height: 1.03;
       margin-bottom: 22px;
+      color: #ffffff;
     }
 
-    .hero h1 .muted { color: var(--gray-light); }
+    .hero h1 .muted { color: rgba(255,255,255,0.22); }
 
     .hero p {
       font-size: 17px;
-      color: var(--gray);
+      color: rgba(255,255,255,0.45);
       line-height: 1.65;
       max-width: 440px;
       margin: 0 auto 38px;
@@ -145,8 +187,8 @@
       align-items: center;
       gap: 8px;
       padding: 13px 24px;
-      background: var(--black);
-      color: var(--white);
+      background: #ffffff;
+      color: #0a0a0a;
       border-radius: 10px;
       font-size: 15px;
       font-weight: 650;
@@ -160,7 +202,7 @@
       align-items: center;
       gap: 7px;
       padding: 12px 20px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255,255,255,0.18);
       border-radius: 10px;
       font-size: 15px;
       font-weight: 500;
@@ -168,7 +210,8 @@
       text-decoration: none;
       transition: all 0.1s;
     }
-    .btn-ghost:hover { background: var(--bg-card); border-color: #d1d5db; }
+    .btn-ghost { color: rgba(255,255,255,0.8); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.3); }
 
     /* ── Divider ── */
     .hr { height: 1px; background: var(--border); max-width: 900px; margin: 0 auto; }
@@ -186,7 +229,7 @@
       font-weight: 700;
       letter-spacing: 1.8px;
       text-transform: uppercase;
-      color: var(--gray-light);
+      color: var(--gray);
       margin-bottom: 10px;
     }
 
@@ -438,6 +481,176 @@
       .features-grid { grid-template-columns: 1fr; }
       .hero h1 { letter-spacing: -2px; }
     }
+
+    /* ── How it works ── */
+    .how-section {
+      padding: 72px 48px 64px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 48px;
+      position: relative;
+    }
+    .how-steps::before {
+      content: '';
+      position: absolute;
+      top: 22px;
+      left: calc(16.66% + 12px);
+      right: calc(16.66% + 12px);
+      height: 1px;
+      background: var(--border);
+      z-index: 0;
+    }
+    .how-step { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 0 20px; position: relative; z-index: 1; }
+    .how-num {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--black);
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .how-step h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+    .how-step p { font-size: 13.5px; color: var(--gray); line-height: 1.6; }
+
+    /* ── Before / After ── */
+    .ba-section { padding: 0 48px 80px; max-width: 1100px; margin: 0 auto; }
+    .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .ba-wrap { display: flex; flex-direction: column; gap: 10px; }
+    .ba-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 650; letter-spacing: 0.4px; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; align-self: flex-start; }
+    .ba-tag.before { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .ba-tag.after  { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+
+    .yt-browser { border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 8px 32px rgba(0,0,0,.09); }
+    .yt-browser-bar { background: #f0f0f0; padding: 8px 12px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #e5e7eb; }
+    .yt-browser-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .yt-browser-url { flex: 1; background: #fff; border: 1px solid #e0e0e0; border-radius: 100px; padding: 3px 12px; font-size: 10px; color: #595959; margin: 0 6px; }
+
+    .yt-page { background: #fff; }
+    .yt-top { display: flex; align-items: center; padding: 8px 12px; gap: 10px; border-bottom: 1px solid #f0f0f0; }
+    .yt-searchbar { flex: 1; height: 24px; border: 1px solid #e0e0e0; border-radius: 100px; background: #fafafa; }
+    .yt-top-icons { display: flex; gap: 7px; flex-shrink: 0; align-items: center; }
+    .yt-icon-circle { width: 24px; height: 24px; border-radius: 50%; background: #f0f0f0; position: relative; flex-shrink: 0; }
+    .yt-icon-circle.bell::after { content: ''; position: absolute; top: 2px; right: 2px; width: 8px; height: 8px; border-radius: 50%; background: #ff0000; border: 1.5px solid #fff; }
+
+    /* Fixed-height body so both sides match */
+    .yt-body { display: flex; height: 320px; overflow: hidden; }
+    .yt-sidebar { width: 72px; flex-shrink: 0; border-right: 1px solid #f5f5f5; padding: 10px 0; display: flex; flex-direction: column; gap: 2px; }
+    .yt-nav { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 4px; font-size: 8px; color: #606060; cursor: default; }
+    .yt-nav-icon { width: 16px; height: 16px; background: #e0e0e0; border-radius: 3px; }
+    .yt-nav.active .yt-nav-icon { background: #111; }
+    .yt-nav.active { color: #111; font-weight: 700; }
+    .yt-nav.shorts .yt-nav-icon { background: #ff0000; }
+    .yt-nav.shorts { color: #ff0000; }
+
+    .yt-main { flex: 1; padding: 10px 12px; overflow: hidden; }
+
+    /* Shorts shelf — proper portrait */
+    .yt-shelf-title { font-size: 9px; font-weight: 700; color: #111; margin-bottom: 7px; display: flex; align-items: center; gap: 5px; }
+    .yt-shelf-title-dot { width: 9px; height: 9px; background: #ff0000; border-radius: 2px; flex-shrink: 0; }
+    .yt-shorts-row { display: flex; gap: 6px; margin-bottom: 12px; }
+    .yt-short { width: 52px; height: 88px; border-radius: 7px; flex-shrink: 0; position: relative; overflow: hidden; }
+    .yt-short-views { position: absolute; bottom: 4px; left: 0; right: 0; text-align: center; font-size: 7px; font-weight: 600; color: rgba(255,255,255,.9); }
+
+    /* Video grid */
+    .yt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .yt-card { display: flex; flex-direction: column; gap: 5px; }
+    .yt-thumb { aspect-ratio: 16/9; border-radius: 6px; width: 100%; position: relative; overflow: hidden; }
+    .yt-duration { position: absolute; bottom: 3px; right: 4px; background: rgba(0,0,0,.75); color: #fff; font-size: 7px; font-weight: 600; padding: 1px 3px; border-radius: 2px; }
+    .yt-card-meta { display: flex; gap: 6px; }
+    .yt-avatar-sm { width: 18px; height: 18px; border-radius: 50%; background: #e0e0e0; flex-shrink: 0; margin-top: 1px; }
+    .yt-card-text { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .yt-card-title { height: 7px; background: #d1d5db; border-radius: 3px; }
+    .yt-card-title2 { height: 7px; background: #d1d5db; border-radius: 3px; width: 75%; }
+    .yt-card-sub { height: 5px; background: #e5e7eb; border-radius: 3px; width: 55%; }
+
+    /* After — zen state */
+    .yt-zen-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #fafafa; }
+    .yt-zen-rings { opacity: 0.18; }
+    .yt-zen-msg { font-size: 11px; font-weight: 600; color: #9ca3af; text-align: center; line-height: 1.6; }
+    .yt-zen-hint { font-size: 9px; color: #d1d5db; }
+
+    @media (max-width: 720px) {
+      .how-steps { grid-template-columns: 1fr; }
+      .how-steps::before { display: none; }
+      .ba-grid { grid-template-columns: 1fr; }
+      .ba-section { padding: 0 20px 60px; }
+      .how-section { padding: 60px 20px 48px; }
+    }
+
+    /* ── Product Preview ── */
+    .preview-section {
+      padding: 80px 48px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .preview-stage {
+      display: flex;
+      justify-content: center;
+    }
+
+    .preview-frame {
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.15), 0 8px 30px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.07);
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .preview-frame.visible { opacity: 1; transform: translateY(0); }
+
+    .preview-chrome {
+      background: #ebebeb;
+      padding: 9px 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid rgba(0,0,0,0.09);
+    }
+    .pdot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+    /* popup replica */
+    .pp { background: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif; font-size: 13px; position: relative; }
+
+    .pp-header { padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .pp-hr { height: 1px; background: #e5e7eb; }
+
+    .pp-stat { padding: 8px 15px; display: flex; align-items: center; gap: 7px; background: #f0fdf4; border-bottom: 1px solid #bbf7d0; }
+
+    .pp-presets { padding: 10px 15px; display: flex; gap: 6px; border-bottom: 1px solid #e5e7eb; }
+    .pp-pill { flex: 1; padding: 5px 8px; font-size: 11.5px; font-weight: 550; font-family: inherit; color: #6b7280; background: #fff; border: 1px solid #e5e7eb; border-radius: 999px; cursor: default; text-align: center; line-height: 1.2; display: flex; flex-direction: column; }
+    .pp-pill-sub { font-size: 9px; font-weight: 400; opacity: 0.75; margin-top: 1px; }
+    .pp-pill-active { background: #18181b; border-color: #18181b; color: #fff; }
+
+    .pp-limit { padding: 10px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid #e5e7eb; }
+    .pp-lpill { padding: 4px 8px; font-size: 11px; font-weight: 550; font-family: inherit; color: #6b7280; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; cursor: default; line-height: 1; white-space: nowrap; }
+    .pp-lpill-active { background: #18181b; border-color: #18181b; color: #fff; }
+    .pp-custom { width: 40px; padding: 3px 5px; font-size: 11px; font-family: inherit; color: #374151; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; text-align: center; outline: none; }
+
+    .pp-settings { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+    .pp-card { border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+    .pp-card-hd { padding: 7px 12px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    .pp-card-label { font-size: 10px; font-weight: 650; letter-spacing: 0.5px; text-transform: uppercase; color: #9ca3af; }
+    .pp-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-bottom: 1px solid #e5e7eb; }
+    .pp-row-lbl { font-size: 12.5px; font-weight: 440; color: #374151; }
+    .pp-sw { width: 36px; height: 20px; border-radius: 10px; position: relative; flex-shrink: 0; }
+    .pp-sw.on { background: #18181b; }
+    .pp-sw.off { background: #d1d5db; }
+    .pp-sw::after { content: ''; position: absolute; width: 16px; height: 16px; background: #fff; border-radius: 50%; top: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.22); transition: none; }
+    .pp-sw.on::after { right: 2px; }
+    .pp-sw.off::after { left: 2px; }
+
+    .pp-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(to bottom, transparent, #fff); pointer-events: none; }
   </style>
 </head>
 <body>
@@ -464,10 +677,21 @@
   </a>
 </nav>
 
+<main>
+<div class="hero-wrap">
+<div class="hero-circles">
+  <svg width="1000" height="1000" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="500" cy="500" r="120" stroke="white" stroke-width="1" opacity="0.10"/>
+    <circle cx="500" cy="500" r="220" stroke="white" stroke-width="1" opacity="0.07"/>
+    <circle cx="500" cy="500" r="330" stroke="white" stroke-width="1" opacity="0.055"/>
+    <circle cx="500" cy="500" r="440" stroke="white" stroke-width="1" opacity="0.04"/>
+    <circle cx="500" cy="500" r="490" stroke="white" stroke-width="0.5" opacity="0.025"/>
+  </svg>
+</div>
 <section class="hero">
   <div class="hero-badge">
     <svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#16a34a"/></svg>
-    Free &amp; Open Source · Chrome Extension
+    Free forever · Open Source · No subscription
   </div>
   <h1>YouTube,<br><span class="muted">without the noise.</span></h1>
   <p>Block the feed, kill autoplay, set a daily time limit. ZenTube removes every hook that pulls you back in.</p>
@@ -481,7 +705,149 @@
       View source
     </a>
   </div>
-  <p style="margin-top:28px;font-size:13px;color:var(--gray-light);font-style:italic;line-height:1.6;">I kept opening YouTube for one video and losing the entire evening.<br>Not once — every single time. Built this because I had to. — <a href="https://raghavsharma.me" target="_blank" style="color:var(--gray);text-decoration:none;border-bottom:1px solid var(--border);">Raghav</a></p>
+  <p style="margin-top:28px;font-size:13px;color:rgba(255,255,255,0.28);font-style:italic;line-height:1.6;">I kept opening YouTube for one video and losing the entire evening.<br>Not once — every single time. Built this because I had to. — <a href="https://raghavsharma.me" target="_blank" style="color:rgba(255,255,255,0.45);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.15);">Raghav</a></p>
+</section>
+</div>
+
+<div class="hr-full"></div>
+
+<!-- ── Product Preview ── -->
+<section class="preview-section">
+  <div class="section-eyebrow" style="text-align:center;">The extension</div>
+  <h2 style="text-align:center;font-size:clamp(26px,3.5vw,38px);font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin-bottom:10px;">Simple. Focused. Yours.</h2>
+  <p style="text-align:center;font-size:16px;color:var(--gray);margin-bottom:48px;">One popup. No accounts. No bloat. Just the controls you need.</p>
+
+  <div class="preview-stage">
+    <div class="preview-frame">
+      <div class="preview-chrome">
+        <span class="pdot" style="background:#ff5f57"></span>
+        <span class="pdot" style="background:#febc2e"></span>
+        <span class="pdot" style="background:#28c840"></span>
+        <span style="flex:1;text-align:center;font-size:11px;font-weight:500;color:#888;margin-right:42px;letter-spacing:0.1px;">ZenTube</span>
+      </div>
+      <iframe src="demo.html" width="340" height="520" scrolling="yes" frameborder="0" style="display:block;" title="ZenTube extension interactive demo"></iframe>
+    </div>
+  </div>
+</section>
+
+<div class="hr-full"></div>
+
+<!-- ── How it works ── -->
+<section class="how-section">
+  <div class="section-eyebrow">How it works</div>
+  <h2 style="font-size:clamp(26px,3.5vw,38px);font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin-bottom:0;">Three steps. That's it.</h2>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="how-num">1</div>
+      <h3>Install</h3>
+      <p>One click from the Chrome Web Store. No account, no signup, no permissions beyond YouTube.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">2</div>
+      <h3>Pick a preset</h3>
+      <p>Light, Balanced, or Zen. Or build your own. Takes ten seconds.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">3</div>
+      <h3>Open YouTube</h3>
+      <p>It's already different. The feed is gone. The autoplay is off. The clock is ticking.</p>
+    </div>
+  </div>
+</section>
+
+<div class="hr-full"></div>
+
+<!-- ── Before / After ── -->
+<section class="ba-section">
+  <div class="how-section" style="padding-bottom:40px;">
+    <div class="section-eyebrow">See the difference</div>
+    <h2 style="font-size:clamp(26px,3.5vw,38px);font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin-bottom:0;">Same URL. Different experience.</h2>
+  </div>
+  <div class="ba-grid">
+
+    <!-- Before -->
+    <div class="ba-wrap">
+      <div class="ba-tag before">● Before</div>
+      <div class="yt-browser">
+        <div class="yt-browser-bar">
+          <div class="yt-browser-dot" style="background:#ff5f57"></div>
+          <div class="yt-browser-dot" style="background:#febc2e"></div>
+          <div class="yt-browser-dot" style="background:#28c840"></div>
+          <div class="yt-browser-url">youtube.com</div>
+        </div>
+        <div class="yt-page">
+          <div class="yt-top">
+            <img src="yt-logo.png" height="14" style="display:block;flex-shrink:0;" alt="YouTube">
+            <div class="yt-searchbar"></div>
+            <div class="yt-top-icons">
+              <div class="yt-icon-circle bell"></div>
+              <div class="yt-icon-circle" style="background:#ff0000;"></div>
+            </div>
+          </div>
+          <div class="yt-body">
+            <div class="yt-sidebar">
+              <div class="yt-nav active"><div class="yt-nav-icon"></div>Home</div>
+              <div class="yt-nav shorts"><div class="yt-nav-icon"></div>Shorts</div>
+              <div class="yt-nav"><div class="yt-nav-icon"></div>Subs</div>
+              <div class="yt-nav"><div class="yt-nav-icon"></div>Library</div>
+            </div>
+            <div class="yt-main">
+              <div class="yt-shelf-title"><span class="yt-shelf-title-dot"></span>Shorts</div>
+              <div class="yt-shorts-row">
+                <div class="yt-short" style="background:linear-gradient(170deg,#f97316,#ef4444)"><div class="yt-short-views">1.2M</div></div>
+                <div class="yt-short" style="background:linear-gradient(170deg,#8b5cf6,#3b82f6)"><div class="yt-short-views">890K</div></div>
+                <div class="yt-short" style="background:linear-gradient(170deg,#10b981,#06b6d4)"><div class="yt-short-views">2.1M</div></div>
+                <div class="yt-short" style="background:linear-gradient(170deg,#f59e0b,#ec4899)"><div class="yt-short-views">445K</div></div>
+              </div>
+              <div class="yt-grid">
+                <div class="yt-card"><div class="yt-thumb" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)"><div class="yt-duration">12:34</div></div><div class="yt-card-meta"><div class="yt-avatar-sm"></div><div class="yt-card-text"><div class="yt-card-title"></div><div class="yt-card-title2"></div><div class="yt-card-sub"></div></div></div></div>
+                <div class="yt-card"><div class="yt-thumb" style="background:linear-gradient(135deg,#f43f5e,#fb923c)"><div class="yt-duration">8:02</div></div><div class="yt-card-meta"><div class="yt-avatar-sm"></div><div class="yt-card-text"><div class="yt-card-title"></div><div class="yt-card-title2"></div><div class="yt-card-sub"></div></div></div></div>
+                <div class="yt-card"><div class="yt-thumb" style="background:linear-gradient(135deg,#14b8a6,#22d3ee)"><div class="yt-duration">24:11</div></div><div class="yt-card-meta"><div class="yt-avatar-sm"></div><div class="yt-card-text"><div class="yt-card-title"></div><div class="yt-card-title2"></div><div class="yt-card-sub"></div></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- After -->
+    <div class="ba-wrap">
+      <div class="ba-tag after">✓ After ZenTube</div>
+      <div class="yt-browser">
+        <div class="yt-browser-bar">
+          <div class="yt-browser-dot" style="background:#ff5f57"></div>
+          <div class="yt-browser-dot" style="background:#febc2e"></div>
+          <div class="yt-browser-dot" style="background:#28c840"></div>
+          <div class="yt-browser-url">youtube.com</div>
+        </div>
+        <div class="yt-page">
+          <div class="yt-top">
+            <img src="yt-logo.png" height="14" style="display:block;flex-shrink:0;" alt="YouTube">
+            <div class="yt-searchbar"></div>
+            <div class="yt-top-icons">
+              <div class="yt-icon-circle"></div>
+            </div>
+          </div>
+          <div class="yt-body">
+            <div class="yt-sidebar">
+              <div class="yt-nav active"><div class="yt-nav-icon"></div>Home</div>
+              <div class="yt-nav"><div class="yt-nav-icon"></div>Library</div>
+            </div>
+            <div class="yt-zen-main">
+              <svg class="yt-zen-rings" width="52" height="52" viewBox="0 0 52 52" fill="none">
+                <circle cx="26" cy="26" r="22" stroke="#111" stroke-width="1.5"/>
+                <circle cx="26" cy="26" r="15" stroke="#111" stroke-width="1.5"/>
+                <circle cx="26" cy="26" r="7"  stroke="#111" stroke-width="1.5"/>
+              </svg>
+              <div class="yt-zen-msg">Feed hidden.<br>Open with intention.</div>
+              <div class="yt-zen-hint">Shorts, sidebar & notifications removed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <div class="hr-full"></div>
@@ -619,6 +985,56 @@
 
 <div class="hr-full"></div>
 
+<section class="section" id="faq" style="max-width:720px;">
+  <div class="section-eyebrow">FAQ</div>
+  <div class="section-heading" style="font-size:clamp(24px,3vw,36px);margin-bottom:32px;">Common questions.</div>
+  <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+
+    <details style="border-bottom:1px solid var(--border);">
+      <summary style="padding:18px 20px;font-size:14px;font-weight:650;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;user-select:none;">
+        How is ZenTube different from DF YouTube?
+        <span style="font-size:18px;font-weight:300;color:var(--gray);flex-shrink:0;margin-left:12px;">+</span>
+      </summary>
+      <p style="padding:0 20px 18px;font-size:14px;color:var(--gray);line-height:1.75;">DF YouTube recently moved to a paid model. ZenTube is free forever and open source — you can read every line of code on <a href="https://github.com/raghav4/ZenTube" style="color:var(--black);">GitHub</a>. ZenTube also adds a <strong>daily time limit</strong> with a countdown timer and a hard-pause overlay when your limit is up — something DF YouTube doesn't offer.</p>
+    </details>
+
+    <details style="border-bottom:1px solid var(--border);">
+      <summary style="padding:18px 20px;font-size:14px;font-weight:650;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;user-select:none;">
+        Will ZenTube always be free?
+        <span style="font-size:18px;font-weight:300;color:var(--gray);flex-shrink:0;margin-left:12px;">+</span>
+      </summary>
+      <p style="padding:0 20px 18px;font-size:14px;color:var(--gray);line-height:1.75;">Yes. ZenTube is open source under the MIT license. It will never go behind a paywall. If it's useful to you, <a href="https://www.buymeacoffee.com/raghavsharma" style="color:var(--black);">buying a coffee</a> helps keep it maintained.</p>
+    </details>
+
+    <details style="border-bottom:1px solid var(--border);">
+      <summary style="padding:18px 20px;font-size:14px;font-weight:650;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;user-select:none;">
+        Does ZenTube collect any data?
+        <span style="font-size:18px;font-weight:300;color:var(--gray);flex-shrink:0;margin-left:12px;">+</span>
+      </summary>
+      <p style="padding:0 20px 18px;font-size:14px;color:var(--gray);line-height:1.75;">No. ZenTube only runs on YouTube and only reads and writes to your browser's local storage. No accounts, no analytics, no external servers. Your data never leaves your device.</p>
+    </details>
+
+    <details style="border-bottom:1px solid var(--border);">
+      <summary style="padding:18px 20px;font-size:14px;font-weight:650;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;user-select:none;">
+        How does the daily time limit work?
+        <span style="font-size:18px;font-weight:300;color:var(--gray);flex-shrink:0;margin-left:12px;">+</span>
+      </summary>
+      <p style="padding:0 20px 18px;font-size:14px;color:var(--gray);line-height:1.75;">Set a limit in minutes from the popup (15m, 30m, 1hr, or custom). A countdown timer appears in the corner of every YouTube tab. When time's up, the video pauses and a full-screen overlay appears. You can dismiss it — but you'll know.</p>
+    </details>
+
+    <details>
+      <summary style="padding:18px 20px;font-size:14px;font-weight:650;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;user-select:none;">
+        Which browsers does ZenTube support?
+        <span style="font-size:18px;font-weight:300;color:var(--gray);flex-shrink:0;margin-left:12px;">+</span>
+      </summary>
+      <p style="padding:0 20px 18px;font-size:14px;color:var(--gray);line-height:1.75;">Chrome 105 and above. Any Chromium-based browser (Edge, Brave, Arc) should work — install it via the Chrome Web Store or load unpacked from source.</p>
+    </details>
+
+  </div>
+</section>
+
+<div class="hr-full"></div>
+
 <section class="changelog" id="changelog">
   <div class="section-eyebrow">Changelog</div>
   <div class="section-heading">What's new.</div>
@@ -631,6 +1047,17 @@
 </section>
 
 <div class="hr-full"></div>
+
+<script>
+(function () {
+  const frame = document.querySelector('.preview-frame');
+  if (frame) {
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { frame.classList.add('visible'); } });
+    }, { threshold: 0.2 }).observe(frame);
+  }
+})();
+</script>
 
 <script>
 (function () {
@@ -712,6 +1139,7 @@
     <a href="CHROME_STORE_URL" target="_blank">Chrome Store</a>
   </div>
 </footer>
+</main>
 
 <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="raghavsharma" data-description="Support me on Buy me a coffee!" data-message="" data-color="#FF813F" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
 
