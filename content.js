@@ -103,13 +103,17 @@ document.addEventListener('visibilitychange', () => {
     pauseSession();
     stopTimerTick();
   } else {
-    applyClasses();
-    if (isTracking()) {
-      startSession();
-      if (getLimitMs() && !timerTickId) startTimerTick();
-    }
-    if (settings.enabled !== false && settings.disableAutoplay) handleAutoplay();
-    updateTimerDisplay();
+    // Re-fetch from storage — tab may have been frozen while settings changed
+    chrome.storage.sync.get(SETTINGS_KEY, (result) => {
+      settings = { ...DEFAULTS, ...(result[SETTINGS_KEY] || {}) };
+      applyClasses();
+      if (isTracking()) {
+        startSession();
+        if (getLimitMs() && !timerTickId) startTimerTick();
+      }
+      if (settings.enabled !== false && settings.disableAutoplay) handleAutoplay();
+      updateTimerDisplay();
+    });
   }
 });
 
