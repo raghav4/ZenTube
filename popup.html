@@ -539,13 +539,22 @@
 </div>
 
 <!-- Footer -->
-<div class="footer">
-  <span class="saved" id="savedMsg">
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-      <polyline points="20 6 9 17 4 12"/>
-    </svg>
-    Saved
-  </span>
+<div class="footer" style="flex-direction:column;align-items:stretch;gap:7px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;">
+    <span style="position:relative;display:inline-flex;align-items:center;">
+      <span class="saved" id="savedMsg" style="position:absolute;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Saved
+      </span>
+      <span id="supportNudge" style="font-size:11px;color:var(--text-2);transition:opacity 0.22s;">Enjoying ZenTube?</span>
+    </span>
+    <a href="https://www.buymeacoffee.com/raghavsharma" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:4px 9px;background:var(--primary);border-radius:6px;text-decoration:none;font-size:11px;font-weight:600;color:#fff;font-family:inherit;line-height:1;flex-shrink:0;">
+      ❤️ <span>Support us</span>
+    </a>
+  </div>
+  <a href="mailto:hey@raghavsharma.me" style="font-size:10px;color:var(--text-muted);text-decoration:underline;text-underline-offset:2px;align-self:center;">✉️ Contact us</a>
 </div>
 
 <script src="popup.js"></script>

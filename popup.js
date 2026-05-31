@@ -92,8 +92,13 @@ function fmtMs(ms) {
 
 function showSaved() {
   const el = document.getElementById('savedMsg');
+  const nudge = document.getElementById('supportNudge');
   el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 1600);
+  if (nudge) nudge.style.opacity = '0';
+  setTimeout(() => {
+    el.classList.remove('show');
+    if (nudge) nudge.style.opacity = '1';
+  }, 1600);
 }
 
 function setExtensionIcon(enabled) {
