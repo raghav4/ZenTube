@@ -1180,7 +1180,7 @@
     .then(r => r.json())
     .then(releases => {
       if (!Array.isArray(releases) || !releases.length) {
-        status.innerHTML = 'Could not load releases. <a href="https://github.com/raghav4/ZenTube/releases" target="_blank" style="color:var(--black);">View on GitHub →</a>';
+        status.innerHTML = '<a href="https://github.com/raghav4/ZenTube/releases" target="_blank" style="color:var(--black);">View on GitHub →</a>';
         return;
       }
       status.remove();
