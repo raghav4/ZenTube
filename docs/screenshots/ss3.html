@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1280px; height: 800px; overflow: hidden;
+    background: #0f0f10;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex; align-items: center; justify-content: center;
+    gap: 80px;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* glow */
+  body::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(167,139,250,0.15), transparent 70%);
+    top: 50%; left: 50%; transform: translate(-80%, -50%);
+    pointer-events: none;
+  }
+
+  .left {
+    position: relative; z-index: 1;
+    max-width: 460px;
+  }
+
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #a78bfa; margin-bottom: 16px;
+  }
+
+  h2 {
+    font-size: 46px; font-weight: 700;
+    color: #fff; line-height: 1.12;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+  }
+
+  .sub {
+    font-size: 16px; color: rgba(255,255,255,0.5); line-height: 1.6;
+    margin-bottom: 32px; max-width: 380px;
+  }
+
+  .how {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+
+  .how-item {
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+
+  .how-num {
+    width: 28px; height: 28px;
+    background: rgba(167,139,250,0.15);
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 700; color: #a78bfa;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .how-text strong { font-size: 14px; font-weight: 600; color: #fff; display: block; margin-bottom: 2px; }
+  .how-text span { font-size: 13px; color: rgba(255,255,255,0.45); }
+
+  /* ── Timer widget ── */
+  .widget {
+    position: relative; z-index: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 28px;
+    width: 320px;
+    backdrop-filter: blur(8px);
+  }
+
+  .w-title {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.05em;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+    margin-bottom: 24px;
+  }
+
+  /* big ring */
+  .ring-wrap {
+    display: flex; justify-content: center;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .ring-inner {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .ring-time {
+    font-size: 36px; font-weight: 700; color: #fff;
+    letter-spacing: -0.03em; line-height: 1;
+  }
+
+  .ring-label {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    margin-top: 4px;
+  }
+
+  /* stats */
+  .w-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 20px;
+  }
+
+  .w-stat {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 12px;
+  }
+
+  .w-stat-label { font-size: 11px; color: rgba(255,255,255,0.35); margin-bottom: 5px; }
+  .w-stat-val { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+
+  /* limit pills */
+  .w-limit-label {
+    font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .w-pills { display: flex; gap: 7px; }
+
+  .w-pill {
+    flex: 1;
+    padding: 6px 0;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 12px; font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.5);
+  }
+
+  .w-pill.active {
+    background: #a78bfa;
+    border-color: #a78bfa;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* progress bar */
+  .w-bar-wrap {
+    margin-top: 16px;
+  }
+
+  .w-bar-labels {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: rgba(255,255,255,0.35);
+    margin-bottom: 6px;
+  }
+
+  .w-bar-track {
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .w-bar-fill {
+    height: 100%;
+    width: 70%;
+    background: linear-gradient(90deg, #a78bfa, #7c3aed);
+    border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+
+<div class="left">
+  <div class="eyebrow">Daily Time Limit</div>
+  <h2>Know when<br>to stop.</h2>
+  <p class="sub">Set a daily limit — 15 min, 30 min, 1 hour. ZenTube tracks your session in real time and tells you when you've had enough.</p>
+
+  <div class="how">
+    <div class="how-item">
+      <div class="how-num">1</div>
+      <div class="how-text">
+        <strong>Set your limit</strong>
+        <span>Choose 15m, 30m, 1hr — or any custom amount.</span>
+      </div>
+    </div>
+    <div class="how-item">
+      <div class="how-num">2</div>
+      <div class="how-text">
+        <strong>Watch live progress</strong>
+        <span>The timer ring in your popup tracks every minute.</span>
+      </div>
+    </div>
+    <div class="how-item">
+      <div class="how-num">3</div>
+      <div class="how-text">
+        <strong>Get reminded when it's up</strong>
+        <span>YouTube shows a gentle on-page reminder — no tab closes, just a nudge.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Timer widget -->
+<div class="widget">
+  <div class="w-title">Today's Session</div>
+
+  <div class="ring-wrap">
+    <svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg)">
+      <circle cx="80" cy="80" r="66" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+      <circle cx="80" cy="80" r="66" fill="none" stroke="url(#grad)" stroke-width="10"
+        stroke-dasharray="414.7" stroke-dashoffset="124.4" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#a78bfa"/>
+          <stop offset="100%" stop-color="#7c3aed"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="ring-inner">
+      <div class="ring-time">21m</div>
+      <div class="ring-label">of 30m used</div>
+    </div>
+  </div>
+
+  <div class="w-stats">
+    <div class="w-stat">
+      <div class="w-stat-label">Today</div>
+      <div class="w-stat-val">21 min</div>
+    </div>
+    <div class="w-stat">
+      <div class="w-stat-label">All time</div>
+      <div class="w-stat-val">3h 10m</div>
+    </div>
+  </div>
+
+  <div class="w-limit-label">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Daily limit
+  </div>
+  <div class="w-pills">
+    <div class="w-pill">Off</div>
+    <div class="w-pill">15m</div>
+    <div class="w-pill active">30m</div>
+    <div class="w-pill">1hr</div>
+  </div>
+
+  <div class="w-bar-wrap">
+    <div class="w-bar-labels">
+      <span>0 min</span>
+      <span>30 min</span>
+    </div>
+    <div class="w-bar-track">
+      <div class="w-bar-fill"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — ZenTube</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+      background: #fff;
+      color: #111827;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.7;
+    }
+
+    nav {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo {
+      width: 28px; height: 28px;
+      background: #18181b;
+      border-radius: 7px;
+      display: grid; place-items: center;
+    }
+
+    .nav-name {
+      font-size: 15px; font-weight: 700; color: #111827;
+      text-decoration: none;
+    }
+
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+
+    .eyebrow {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #6b7280; margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 32px; font-weight: 700; color: #111827;
+      letter-spacing: -0.02em; margin-bottom: 8px;
+    }
+
+    .updated {
+      font-size: 13px; color: #9ca3af; margin-bottom: 48px;
+    }
+
+    h2 {
+      font-size: 16px; font-weight: 700; color: #111827;
+      margin-top: 40px; margin-bottom: 10px;
+    }
+
+    p { font-size: 15px; color: #374151; margin-bottom: 12px; }
+
+    ul {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    ul li {
+      font-size: 15px; color: #374151; margin-bottom: 6px;
+    }
+
+    .callout {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 32px 0;
+    }
+
+    .callout strong { color: #16a34a; }
+    .callout p { color: #374151; margin: 0; font-size: 14px; }
+
+    a { color: #18181b; }
+
+    footer {
+      border-top: 1px solid #e5e7eb;
+      padding: 24px 32px;
+      text-align: center;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9" stroke-opacity="0.4"/></svg>
+  </div>
+  <a class="nav-name" href="index.html">ZenTube</a>
+</nav>
+
+<main>
+  <div class="eyebrow">Legal</div>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: May 2025</p>
+
+  <div class="callout">
+    <p><strong>Short version:</strong> ZenTube collects no personal data. Your settings are stored locally on your device and never leave it. We have no servers, no analytics, and no accounts.</p>
+  </div>
+
+  <h2>What ZenTube does</h2>
+  <p>ZenTube is a Chrome extension that helps you use YouTube with less distraction. It can hide the homepage feed, remove Shorts, disable autoplay, hide sidebar recommendations, and track your daily watch time — all locally in your browser.</p>
+
+  <h2>Data we collect</h2>
+  <p><strong>None.</strong> ZenTube does not collect, transmit, or store any personal information. Specifically, we do not collect:</p>
+  <ul>
+    <li>Your name, email address, or any identifying information</li>
+    <li>Your browsing history or the videos you watch</li>
+    <li>Your location or IP address</li>
+    <li>Clicks, keystrokes, or any behavioural analytics</li>
+    <li>Any financial or authentication information</li>
+  </ul>
+
+  <h2>How your preferences are stored</h2>
+  <p>Your extension settings (which features are enabled, your daily time limit, etc.) are saved using Chrome's built-in <code>chrome.storage.sync</code> API. This stores data locally on your device and optionally syncs it across your Chrome browsers via your Google account — we have no access to this data at any point.</p>
+
+  <h2>Permissions used</h2>
+  <ul>
+    <li><strong>storage</strong> — to save your feature preferences locally.</li>
+    <li><strong>host permission for youtube.com</strong> — to inject the content script that hides UI elements and tracks watch time on YouTube pages. The extension does not access any other websites.</li>
+  </ul>
+
+  <h2>Third-party services</h2>
+  <p>ZenTube does not use any third-party analytics, advertising, or tracking services. No data is sent to any external server.</p>
+
+  <h2>Children's privacy</h2>
+  <p>ZenTube does not knowingly collect any information from anyone, including children under the age of 13.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If this policy changes, the updated version will be posted on this page with a revised date. Because we collect no data, changes are unlikely to affect you.</p>
+
+  <h2>Contact</h2>
+  <p>Questions? Email <a href="mailto:hey@raghavsharma.me">hey@raghavsharma.me</a>.</p>
+</main>
+
+<footer>
+  &copy; 2025 ZenTube &mdash; <a href="index.html">Back to home</a>
+</footer>
+
+</body>
+</html>

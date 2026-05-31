@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1280px; height: 800px; overflow: hidden;
+    background: #f8f9fa;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 36px;
+    padding: 0 80px;
+  }
+
+  .top {
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #6b7280; margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 34px; font-weight: 700; color: #111827;
+    letter-spacing: -0.02em;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 100%;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 22px 20px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+
+  .ic-dark { background: #18181b; color: #fff; }
+  .ic-purple { background: #ede9fe; color: #7c3aed; }
+  .ic-green { background: #f0fdf4; color: #16a34a; }
+  .ic-blue { background: #eff6ff; color: #2563eb; }
+  .ic-orange { background: #fff7ed; color: #ea580c; }
+  .ic-pink { background: #fdf2f8; color: #db2777; }
+  .ic-teal { background: #f0fdfa; color: #0d9488; }
+  .ic-red { background: #fef2f2; color: #dc2626; }
+
+  .card h3 {
+    font-size: 14px; font-weight: 700; color: #111827;
+    letter-spacing: -0.01em;
+  }
+
+  .card p {
+    font-size: 12px; color: #6b7280; line-height: 1.5;
+  }
+
+  .card-tag {
+    display: inline-flex;
+    margin-top: auto;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 10px; font-weight: 600;
+    background: #f3f4f6; color: #374151;
+    width: fit-content;
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="eyebrow">Everything included · Free · No account needed</div>
+  <h2>Everything you need to use YouTube with intention.</h2>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="card-icon ic-dark">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    </div>
+    <h3>Hide Homepage Feed</h3>
+    <p>Open YouTube to a clean page. No infinite scroll, no click bait thumbnails pulling you in.</p>
+    <span class="card-tag">Homepage</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon ic-purple">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    </div>
+    <h3>Remove Shorts</h3>
+    <p>Hide the Shorts tab and short video rows from the homepage. Long-form only.</p>
+    <span class="card-tag">Homepage</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon ic-green">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+    </div>
+    <h3>Disable Autoplay</h3>
+    <p>Videos stop at the end. No more "just one more" — you decide what plays next.</p>
+    <span class="card-tag">While Watching</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon ic-blue">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </div>
+    <h3>Daily Time Limit</h3>
+    <p>Set a 15 min, 30 min, or custom daily cap. ZenTube tracks your session live.</p>
+    <span class="card-tag">Time Tracking</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon ic-orange">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+    </div>
+    <h3>Hide Sidebar Videos</h3>
+    <p>Watch a video without a wall of recommendations tempting you to keep scrolling.</p>
+    <span class="card-tag">While Watching</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon ic-pink">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <h3>Hide Notification Bell</h3>
+    <p>Remove the notification badge that pulls you back in even when you had no plans to open YouTube.</p>
+    <span class="card-tag">Navigation</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon ic-teal">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h3>Hide End Screens</h3>
+    <p>Stop the video-to-video chain. When a video ends, it ends — no curated next-up grid.</p>
+    <span class="card-tag">While Watching</span>
+  </div>
+
+  <div class="card">
+    <div class="card-icon ic-red">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h3>100% Private</h3>
+    <p>No servers, no analytics, no account. Your settings live only in Chrome's local storage.</p>
+    <span class="card-tag">Privacy</span>
+  </div>
+
+</div>
+
+</body>
+</html>

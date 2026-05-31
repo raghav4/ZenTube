@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1280px; height: 800px; overflow: hidden;
+    background: #0f0f10;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex; align-items: center; justify-content: center;
+    gap: 80px;
+  }
+
+  /* subtle grid bg */
+  body::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .left {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 12px; font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: #4ade80;
+    border-radius: 50%;
+  }
+
+  h1 {
+    font-size: 52px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+  }
+
+  h1 span { color: #a78bfa; }
+
+  .sub {
+    font-size: 17px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    margin-bottom: 36px;
+    max-width: 400px;
+  }
+
+  .features {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .feat {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .feat-icon {
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 7px;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+    color: #a78bfa;
+  }
+
+  /* ── Popup mockup ── */
+  .popup {
+    position: relative;
+    z-index: 1;
+    width: 340px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .p-header {
+    padding: 13px 15px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .p-logo-wrap {
+    display: flex; align-items: center; gap: 9px;
+  }
+
+  .p-logo {
+    width: 32px; height: 32px;
+    background: #18181b;
+    border-radius: 8px;
+    display: grid; place-items: center;
+  }
+
+  .p-name {
+    font-size: 15px; font-weight: 700; color: #111827;
+    letter-spacing: -0.01em;
+  }
+
+  .p-master {
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .p-zen-badge {
+    font-size: 10px; font-weight: 600;
+    background: #f0fdf4; color: #16a34a;
+    border: 1px solid #bbf7d0;
+    border-radius: 999px;
+    padding: 2px 8px;
+  }
+
+  .p-toggle {
+    width: 36px; height: 20px;
+    background: #18181b;
+    border-radius: 999px;
+    position: relative;
+  }
+  .p-toggle::after {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    top: 3px; right: 3px;
+  }
+
+  /* timer */
+  .p-timer {
+    padding: 14px 15px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .p-timer-circle {
+    width: 44px; height: 44px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .p-timer-circle svg {
+    transform: rotate(-90deg);
+  }
+
+  .p-timer-num {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    font-size: 10px; font-weight: 700; color: #111827;
+  }
+
+  .p-timer-info { flex: 1; }
+  .p-timer-today { font-size: 11px; color: #6b7280; }
+  .p-timer-val { font-size: 13px; font-weight: 600; color: #111827; }
+
+  /* limit */
+  .p-limit {
+    padding: 10px 15px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
+    gap: 8px;
+  }
+
+  .p-limit-lbl { font-size: 12px; color: #374151; display: flex; align-items: center; gap: 5px; }
+
+  .p-pills { display: flex; gap: 5px; }
+  .p-pill {
+    font-size: 11px; font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    color: #374151;
+  }
+  .p-pill.active {
+    background: #18181b; color: #fff; border-color: #18181b;
+  }
+
+  /* cards */
+  .p-cards { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+
+  .p-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .p-card-hd {
+    padding: 8px 12px;
+    background: #f9fafb;
+    font-size: 11px; font-weight: 600; color: #374151;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .p-card-hd-action { font-weight: 400; color: #6b7280; text-transform: none; letter-spacing: 0; }
+
+  .p-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px;
+    font-size: 12px; color: #374151;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .p-row-lbl { display: flex; align-items: center; gap: 7px; color: #374151; }
+
+  .p-sw {
+    width: 30px; height: 17px;
+    border-radius: 999px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .p-sw.on { background: #18181b; }
+  .p-sw.off { background: #d1d5db; }
+  .p-sw::after {
+    content: '';
+    position: absolute;
+    width: 11px; height: 11px;
+    background: #fff;
+    border-radius: 50%;
+    top: 3px;
+  }
+  .p-sw.on::after { right: 3px; }
+  .p-sw.off::after { left: 3px; }
+
+</style>
+</head>
+<body>
+
+<div class="left">
+  <div class="badge">
+    <div class="badge-dot"></div>
+    Free Chrome Extension
+  </div>
+  <h1>Your YouTube.<br><span>Your rules.</span></h1>
+  <p class="sub">Stop watching by accident. ZenTube hides the feed, kills autoplay, and tracks your time — so YouTube stays a tool, not a trap.</p>
+  <div class="features">
+    <div class="feat">
+      <div class="feat-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      </div>
+      Hide homepage feed & Shorts
+    </div>
+    <div class="feat">
+      <div class="feat-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+      </div>
+      Disable autoplay
+    </div>
+    <div class="feat">
+      <div class="feat-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      Daily time limit with live tracker
+    </div>
+    <div class="feat">
+      <div class="feat-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+      </div>
+      Hide sidebar recommendations
+    </div>
+  </div>
+</div>
+
+<!-- Popup mockup -->
+<div class="popup">
+  <div class="p-header">
+    <div class="p-logo-wrap">
+      <div class="p-logo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M12 2C8.5 2 6 4.5 6 8c0 4.5 6 13 6 13s6-8.5 6-13c0-3.5-2.5-6-6-6z"/></svg>
+      </div>
+      <span class="p-name">ZenTube</span>
+    </div>
+    <div class="p-master">
+      <span class="p-zen-badge">Zen</span>
+      <div class="p-toggle"></div>
+    </div>
+  </div>
+
+  <div class="p-timer">
+    <div class="p-timer-circle">
+      <svg width="44" height="44" viewBox="0 0 44 44">
+        <circle cx="22" cy="22" r="18" fill="none" stroke="#e5e7eb" stroke-width="3.5"/>
+        <circle cx="22" cy="22" r="18" fill="none" stroke="#18181b" stroke-width="3.5"
+          stroke-dasharray="113" stroke-dashoffset="70" stroke-linecap="round"/>
+      </svg>
+      <div class="p-timer-num">42m</div>
+    </div>
+    <div class="p-timer-info">
+      <div class="p-timer-today">Today's watch time</div>
+      <div class="p-timer-val">42 min · 3 hr 10 min total</div>
+    </div>
+  </div>
+
+  <div class="p-limit">
+    <div class="p-limit-lbl">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Daily Limit
+    </div>
+    <div class="p-pills">
+      <div class="p-pill">Off</div>
+      <div class="p-pill">15m</div>
+      <div class="p-pill active">30m</div>
+      <div class="p-pill">1 hr</div>
+    </div>
+  </div>
+
+  <div class="p-cards">
+    <div class="p-card">
+      <div class="p-card-hd">
+        Homepage
+        <span class="p-card-hd-action">Enable all</span>
+      </div>
+      <div class="p-row">
+        <div class="p-row-lbl">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Hide Feed
+        </div>
+        <div class="p-sw on"></div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-lbl">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Hide Shorts Videos
+        </div>
+        <div class="p-sw on"></div>
+      </div>
+    </div>
+
+    <div class="p-card">
+      <div class="p-card-hd">
+        While Watching
+        <span class="p-card-hd-action">Enable all</span>
+      </div>
+      <div class="p-row">
+        <div class="p-row-lbl">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+          Disable Autoplay
+        </div>
+        <div class="p-sw on"></div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-lbl">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+          Hide Sidebar Videos
+        </div>
+        <div class="p-sw on"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

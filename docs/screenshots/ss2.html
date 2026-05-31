@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1280px; height: 800px; overflow: hidden;
+    background: #f8f9fa;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 28px;
+  }
+
+  .headline {
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #6b7280; margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 34px; font-weight: 700; color: #111827;
+    letter-spacing: -0.02em; line-height: 1.2;
+  }
+
+  h2 span { color: #18181b; }
+
+  .panels {
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+
+  .panel {
+    width: 540px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+
+  .panel-label {
+    padding: 9px 16px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 7px;
+  }
+
+  .panel-label.before { background: #fef2f2; color: #b91c1c; }
+  .panel-label.after { background: #f0fdf4; color: #16a34a; }
+
+  .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .dot-red { background: #dc2626; }
+  .dot-green { background: #16a34a; }
+
+  /* YouTube-like UI */
+  .yt {
+    background: #fff;
+    padding: 0;
+  }
+
+  /* Nav bar */
+  .yt-nav {
+    height: 46px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex; align-items: center; padding: 0 16px;
+    gap: 12px;
+  }
+
+  .yt-logo {
+    display: flex; align-items: center; gap: 4px;
+    font-weight: 700; font-size: 16px; color: #ff0000;
+  }
+
+  .yt-logo-icon {
+    background: #ff0000;
+    border-radius: 4px;
+    width: 26px; height: 18px;
+    display: grid; place-items: center;
+  }
+
+  .yt-logo-icon::after {
+    content: '';
+    width: 0; height: 0;
+    border-left: 7px solid #fff;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+
+  .yt-searchbar {
+    flex: 1; height: 26px;
+    background: #f1f3f4;
+    border-radius: 999px;
+    display: flex; align-items: center; padding: 0 12px;
+    font-size: 12px; color: #9ca3af;
+    max-width: 260px;
+  }
+
+  .yt-nav-right { margin-left: auto; display: flex; gap: 8px; }
+  .yt-nav-btn {
+    width: 26px; height: 26px;
+    background: #f1f3f4; border-radius: 50%;
+  }
+
+  /* Sidebar tabs */
+  .yt-body { display: flex; height: 456px; }
+
+  .yt-sidebar {
+    width: 68px;
+    background: #fff;
+    border-right: 1px solid #e5e7eb;
+    padding: 8px 0;
+    display: flex; flex-direction: column; gap: 2px;
+    align-items: center;
+  }
+
+  .yt-sidebar-item {
+    width: 56px;
+    padding: 6px 0;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .yt-sidebar-item.active { background: #f1f3f4; }
+
+  .yt-sidebar-icon {
+    width: 18px; height: 18px;
+    background: #9ca3af; border-radius: 3px;
+  }
+
+  .yt-sidebar-txt {
+    font-size: 9px; color: #374151;
+  }
+
+  /* Content area */
+  .yt-content {
+    flex: 1; overflow: hidden;
+    padding: 12px;
+  }
+
+  /* Category pills */
+  .yt-pills {
+    display: flex; gap: 7px; margin-bottom: 12px; flex-wrap: nowrap; overflow: hidden;
+  }
+
+  .yt-pill {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 11px; font-weight: 500;
+    background: #111827; color: #fff;
+    white-space: nowrap;
+  }
+
+  .yt-pill.light {
+    background: #f1f3f4; color: #111827;
+  }
+
+  /* Video grid */
+  .yt-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .yt-card { cursor: pointer; }
+  .yt-thumb {
+    aspect-ratio: 16/9;
+    border-radius: 8px;
+    background: #e5e7eb;
+    margin-bottom: 7px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .yt-thumb-1 { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+  .yt-thumb-2 { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+  .yt-thumb-3 { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+  .yt-thumb-4 { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+  .yt-thumb-5 { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+  .yt-thumb-6 { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+
+  .yt-duration {
+    position: absolute; bottom: 5px; right: 5px;
+    background: rgba(0,0,0,0.8); color: #fff;
+    font-size: 9px; font-weight: 600;
+    padding: 2px 5px; border-radius: 3px;
+  }
+
+  .yt-title {
+    font-size: 11px; font-weight: 600; color: #111827;
+    line-height: 1.3; margin-bottom: 3px;
+  }
+
+  .yt-meta { font-size: 10px; color: #6b7280; }
+
+  /* Shorts row */
+  .yt-shorts-row {
+    display: flex; gap: 8px; margin-bottom: 12px;
+  }
+
+  .yt-shorts-title {
+    font-size: 12px; font-weight: 700; color: #111827;
+    display: flex; align-items: center; gap: 5px;
+    margin-bottom: 7px;
+  }
+
+  .yt-shorts-icon {
+    width: 15px; height: 15px;
+    background: #000; border-radius: 3px;
+    display: grid; place-items: center;
+    color: #fff; font-size: 8px; font-weight: 700;
+  }
+
+  .yt-short {
+    width: 72px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .yt-short-thumb {
+    aspect-ratio: 9/16;
+    width: 72px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+  }
+
+  .yt-short-1 { background: linear-gradient(180deg, #6366f1, #4f46e5); }
+  .yt-short-2 { background: linear-gradient(180deg, #ec4899, #db2777); }
+  .yt-short-3 { background: linear-gradient(180deg, #f59e0b, #d97706); }
+  .yt-short-4 { background: linear-gradient(180deg, #10b981, #059669); }
+
+  .yt-short-lbl { font-size: 9px; color: #374151; font-weight: 500; }
+
+  /* ── AFTER: empty state ── */
+  .yt-empty {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; padding: 20px;
+    color: #9ca3af;
+  }
+
+  .yt-empty-icon {
+    width: 48px; height: 48px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    display: grid; place-items: center;
+    color: #d1d5db;
+  }
+
+  .yt-empty h3 {
+    font-size: 14px; font-weight: 600; color: #374151;
+  }
+
+  .yt-empty p {
+    font-size: 12px; color: #9ca3af; text-align: center; max-width: 200px; line-height: 1.5;
+  }
+
+  /* pills on the after side — same but no shorts, no feed, just search */
+  .yt-body-after { display: flex; height: 456px; }
+</style>
+</head>
+<body>
+
+<div class="headline">
+  <div class="eyebrow">Feature spotlight</div>
+  <h2>Open YouTube. See nothing you didn't ask for.</h2>
+</div>
+
+<div class="panels">
+
+  <!-- BEFORE -->
+  <div class="panel">
+    <div class="panel-label before">
+      <div class="dot dot-red"></div>
+      Without ZenTube
+    </div>
+    <div class="yt">
+      <div class="yt-nav">
+        <div class="yt-logo">
+          <div class="yt-logo-icon"></div>
+          YouTube
+        </div>
+        <div class="yt-searchbar">Search</div>
+        <div class="yt-nav-right">
+          <div class="yt-nav-btn"></div>
+          <div class="yt-nav-btn"></div>
+        </div>
+      </div>
+      <div class="yt-body">
+        <div class="yt-sidebar">
+          <div class="yt-sidebar-item active">
+            <div class="yt-sidebar-icon"></div>
+            <div class="yt-sidebar-txt">Home</div>
+          </div>
+          <div class="yt-sidebar-item">
+            <div class="yt-sidebar-icon"></div>
+            <div class="yt-sidebar-txt">Shorts</div>
+          </div>
+          <div class="yt-sidebar-item">
+            <div class="yt-sidebar-icon"></div>
+            <div class="yt-sidebar-txt">Sub</div>
+          </div>
+        </div>
+        <div class="yt-content">
+          <div class="yt-pills">
+            <div class="yt-pill">All</div>
+            <div class="yt-pill light">Gaming</div>
+            <div class="yt-pill light">Music</div>
+            <div class="yt-pill light">Live</div>
+            <div class="yt-pill light">Tech</div>
+          </div>
+
+          <div class="yt-shorts-title">
+            <div class="yt-shorts-icon">⚡</div>
+            Shorts
+          </div>
+          <div class="yt-shorts-row">
+            <div class="yt-short">
+              <div class="yt-short-thumb yt-short-1"></div>
+              <div class="yt-short-lbl">funny clip</div>
+            </div>
+            <div class="yt-short">
+              <div class="yt-short-thumb yt-short-2"></div>
+              <div class="yt-short-lbl">dance trend</div>
+            </div>
+            <div class="yt-short">
+              <div class="yt-short-thumb yt-short-3"></div>
+              <div class="yt-short-lbl">cooking tip</div>
+            </div>
+            <div class="yt-short">
+              <div class="yt-short-thumb yt-short-4"></div>
+              <div class="yt-short-lbl">life hack</div>
+            </div>
+          </div>
+
+          <div class="yt-grid">
+            <div class="yt-card">
+              <div class="yt-thumb yt-thumb-1"><div class="yt-duration">12:34</div></div>
+              <div class="yt-title">10 Things You Didn't Know About Coding</div>
+              <div class="yt-meta">TechChannel · 2.1M views</div>
+            </div>
+            <div class="yt-card">
+              <div class="yt-thumb yt-thumb-2"><div class="yt-duration">8:21</div></div>
+              <div class="yt-title">You Won't Believe This Satisfying Moment</div>
+              <div class="yt-meta">ViralHub · 5.4M views</div>
+            </div>
+            <div class="yt-card">
+              <div class="yt-thumb yt-thumb-3"><div class="yt-duration">23:10</div></div>
+              <div class="yt-title">I Tried Every Fast Food Chain in One Day</div>
+              <div class="yt-meta">FoodReacts · 890K views</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER -->
+  <div class="panel">
+    <div class="panel-label after">
+      <div class="dot dot-green"></div>
+      With ZenTube
+    </div>
+    <div class="yt">
+      <div class="yt-nav">
+        <div class="yt-logo">
+          <div class="yt-logo-icon"></div>
+          YouTube
+        </div>
+        <div class="yt-searchbar">Search</div>
+        <div class="yt-nav-right">
+          <div class="yt-nav-btn"></div>
+          <div class="yt-nav-btn"></div>
+        </div>
+      </div>
+      <div class="yt-body-after">
+        <div class="yt-sidebar">
+          <div class="yt-sidebar-item active">
+            <div class="yt-sidebar-icon"></div>
+            <div class="yt-sidebar-txt">Home</div>
+          </div>
+          <div class="yt-sidebar-item">
+            <div class="yt-sidebar-icon"></div>
+            <div class="yt-sidebar-txt">Library</div>
+          </div>
+        </div>
+        <div class="yt-empty">
+          <div class="yt-empty-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2C8.5 2 6 4.5 6 8c0 4.5 6 13 6 13s6-8.5 6-13c0-3.5-2.5-6-6-6z"/></svg>
+          </div>
+          <h3>Feed hidden by ZenTube</h3>
+          <p>Use the search bar to find what you actually came for.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
