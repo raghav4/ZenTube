@@ -17,6 +17,7 @@ const DEFAULTS = {
   hideMerch: false,
   hideComments: false,
   disablePlaylists: false,
+  grayscaleThumbnails: false,
   dailyLimit: 0,
 };
 
@@ -33,6 +34,7 @@ const CLASS_MAP = {
   hideSidebarPlaylists: 'dfyt-hide-sidebar-playlists',
   hideMerch: 'dfyt-hide-merch',
   hideComments: 'dfyt-hide-comments',
+  grayscaleThumbnails: 'dfyt-grayscale-thumbnails',
 };
 
 let settings = { ...DEFAULTS };

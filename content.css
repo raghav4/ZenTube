@@ -88,3 +88,17 @@ html.dfyt-hide-comments ytd-comments,
 html.dfyt-hide-comments ytd-comment-thread-renderer {
   display: none !important;
 }
+
+/* ── Grayscale Thumbnails — desaturate until hovered (reduces clickbait pull) ── */
+html.dfyt-grayscale-thumbnails ytd-thumbnail img,
+html.dfyt-grayscale-thumbnails ytd-thumbnail .yt-core-image,
+html.dfyt-grayscale-thumbnails yt-image img,
+html.dfyt-grayscale-thumbnails ytd-playlist-thumbnail img {
+  filter: grayscale(1);
+  transition: filter 0.2s ease;
+}
+html.dfyt-grayscale-thumbnails ytd-thumbnail:hover img,
+html.dfyt-grayscale-thumbnails ytd-thumbnail:hover .yt-core-image,
+html.dfyt-grayscale-thumbnails a#thumbnail:hover img {
+  filter: none;
+}
