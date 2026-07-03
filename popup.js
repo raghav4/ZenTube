@@ -181,9 +181,27 @@ function loadStats() {
   });
 }
 
+// ── Keyboard shortcut hint ────────────────────────────────────
+
+function renderShortcut() {
+  const hint = document.getElementById('shortcutHint');
+  const keys = document.getElementById('shortcutKeys');
+  if (!hint || !keys || !chrome.commands?.getAll) { if (hint) hint.style.display = 'none'; return; }
+  chrome.commands.getAll((cmds) => {
+    const cmd = cmds.find(c => c.name === 'toggle-enabled');
+    keys.textContent = cmd && cmd.shortcut ? cmd.shortcut : 'Not set';
+  });
+}
+
 // ── Boot ──────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
+  renderShortcut();
+  document.getElementById('shortcutChange')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+  });
+
   chrome.storage.sync.get(SETTINGS_KEY, (result) => {
     renderUI({ ...DEFAULTS, ...(result[SETTINGS_KEY] || {}) });
   });
