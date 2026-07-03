@@ -7,6 +7,18 @@
   "homepage_url": "https://raghav4.github.io/ZenTube/",
   "permissions": ["storage"],
   "host_permissions": ["*://*.youtube.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "toggle-enabled": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Turn ZenTube on or off"
+    }
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
