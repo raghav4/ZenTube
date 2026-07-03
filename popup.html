@@ -347,6 +347,31 @@
     .lcustom::placeholder { color: var(--text-subtle); font-weight: 400; }
     .lcustom.has-value { background: var(--primary); border-color: var(--primary); color: #fff; }
     .lcustom.has-value::placeholder { color: rgba(255,255,255,.5); }
+
+    /* ─── Dark mode (follows system theme) ─── */
+    /* Placed last so component overrides win over equal-specificity base rules. */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1b1b1e;
+        --bg-muted: #232327;
+        --bg-hover: #2b2b31;
+        --border: #303036;
+        --border-md: #3f3f46;
+        --text: #f4f4f5;
+        --text-2: #d4d4d8;
+        --text-muted: #a1a1aa;
+        --text-subtle: #71717a;
+        --primary: #f4f4f5;
+        --green: #4ade80;
+        --green-bg: #16241b;
+        --green-border: #21382a;
+      }
+      /* Active fills use --primary (now light) — flip their text/knob to dark */
+      .preset.active, .lpill.active, .lcustom.has-value { color: #18181b; }
+      .lcustom.has-value::placeholder { color: rgba(0,0,0,.45); }
+      .sw input:checked + .sw-track::after { background: #18181b; }
+      .stat-text { color: #86efac; }
+    }
   </style>
 </head>
 <body>
