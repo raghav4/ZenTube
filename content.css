@@ -92,13 +92,19 @@ html.dfyt-hide-comments ytd-comment-thread-renderer {
 /* ── Grayscale Thumbnails — desaturate until hovered (reduces clickbait pull) ── */
 html.dfyt-grayscale-thumbnails ytd-thumbnail img,
 html.dfyt-grayscale-thumbnails ytd-thumbnail .yt-core-image,
-html.dfyt-grayscale-thumbnails yt-image img,
-html.dfyt-grayscale-thumbnails ytd-playlist-thumbnail img {
-  filter: grayscale(1);
-  transition: filter 0.2s ease;
+html.dfyt-grayscale-thumbnails ytd-playlist-thumbnail img,
+html.dfyt-grayscale-thumbnails yt-thumbnail-view-model img,
+html.dfyt-grayscale-thumbnails yt-lockup-view-model img,
+html.dfyt-grayscale-thumbnails ytd-rich-grid-media a#thumbnail img,
+html.dfyt-grayscale-thumbnails ytd-compact-video-renderer a#thumbnail img,
+html.dfyt-grayscale-thumbnails ytd-video-renderer a#thumbnail img {
+  filter: grayscale(1) !important;
+  transition: filter 0.2s ease !important;
 }
 html.dfyt-grayscale-thumbnails ytd-thumbnail:hover img,
 html.dfyt-grayscale-thumbnails ytd-thumbnail:hover .yt-core-image,
+html.dfyt-grayscale-thumbnails yt-thumbnail-view-model:hover img,
+html.dfyt-grayscale-thumbnails yt-lockup-view-model:hover img,
 html.dfyt-grayscale-thumbnails a#thumbnail:hover img {
-  filter: none;
+  filter: none !important;
 }
