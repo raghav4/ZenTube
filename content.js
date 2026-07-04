@@ -63,7 +63,46 @@ function todayKey() {
 }
 
 function isTracking() {
-  return settings.enabled !== false && !document.hidden;
+  if (settings.enabled === false) return false;
+  if (window.location.pathname === '/watch') {
+    // Count whenever video is playing — even if the tab is in the background.
+    const v = document.querySelector('video');
+    return v ? !v.paused : false;
+  }
+  // Non-watch pages only count when tab is visible.
+  return !document.hidden;
+}
+
+// ── Video play/pause tracking ──────────────────────────────────
+let trackedVideo = null;
+
+function onVideoPlay() {
+  if (settings.enabled === false || document.hidden) return;
+  const overlay = document.getElementById('dfyt-overlay');
+  if (overlay && overlay.style.display === 'flex') return;
+  startSession();
+  if (getLimitMs() && !timerTickId) startTimerTick();
+}
+
+function onVideoPause() {
+  if (window.location.pathname === '/watch') pauseSession();
+}
+
+function syncVideoTracking() {
+  const v = document.querySelector('video');
+  if (v === trackedVideo) return;
+  if (trackedVideo) {
+    trackedVideo.removeEventListener('play', onVideoPlay);
+    trackedVideo.removeEventListener('pause', onVideoPause);
+  }
+  trackedVideo = v;
+  if (!v) return;
+  v.addEventListener('play', onVideoPlay);
+  v.addEventListener('pause', onVideoPause);
+  if (window.location.pathname === '/watch') {
+    if (!v.paused) { if (sessionStart === null) { startSession(); if (getLimitMs() && !timerTickId) startTimerTick(); } }
+    else if (sessionStart !== null) pauseSession();
+  }
 }
 
 function getTotalTodayMs() {
@@ -106,7 +145,7 @@ function loadTodayMs(cb) {
 
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    pauseSession();
+    if (!isTracking()) pauseSession(); // keep running if video plays in background
     stopTimerTick();
   } else {
     // Re-fetch from storage — tab may have been frozen while settings changed
@@ -160,8 +199,9 @@ function fmtUsed(ms) {
 const INJECTED_CSS = `
 #dfyt-timer{position:fixed;bottom:22px;right:22px;z-index:2147483646;background:rgba(0,0,0,.72);color:#fff;padding:6px 13px 6px 10px;border-radius:100px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:13px;font-weight:600;letter-spacing:-.2px;display:flex;align-items:center;gap:6px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 2px 16px rgba(0,0,0,.3);transition:background .4s;user-select:none;pointer-events:none}
 #dfyt-timer.dfyt-warn{background:rgba(180,83,9,.88)}
-#dfyt-timer.dfyt-crit{background:rgba(185,28,28,.92)}
+#dfyt-timer.dfyt-crit{background:rgba(185,28,28,.92);animation:dfyt-breathe 4s ease-in-out infinite}
 #dfyt-timer.dfyt-snooze{background:rgba(120,53,15,.9)}
+@keyframes dfyt-breathe{0%,100%{opacity:.75}50%{opacity:1}}
 #dfyt-overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 #dfyt-ov-inner{display:flex;flex-direction:column;align-items:center;text-align:center;color:#fff;padding:48px 40px;max-width:380px}
 #dfyt-ov-logo{margin-bottom:28px;opacity:.9}
@@ -216,6 +256,7 @@ function ensureTimerUI() {
   document.getElementById('dfyt-ov-snooze').addEventListener('click', () => {
     snoozeUntilMs = Date.now() + 5 * 60 * 1000;
     document.getElementById('dfyt-overlay').style.display = 'none';
+    document.body.style.overflow = '';
     unblockVideoPlay();
     document.querySelector('video')?.play();
     if (isTracking()) { startSession(); startTimerTick(); }
@@ -225,6 +266,7 @@ function ensureTimerUI() {
     overlayDismissedDay = todayKey();
     snoozeUntilMs = 0;
     document.getElementById('dfyt-overlay').style.display = 'none';
+    document.body.style.overflow = '';
     unblockVideoPlay();
     document.querySelector('video')?.play();
     if (isTracking()) { startSession(); startTimerTick(); }
@@ -239,6 +281,7 @@ function updateTimerDisplay() {
     const overlay = document.getElementById('dfyt-overlay');
     if (overlay && overlay.style.display !== 'none') {
       overlay.style.display = 'none';
+      document.body.style.overflow = '';
       unblockVideoPlay();
       document.querySelector('video')?.play();
       if (isTracking()) { startSession(); startTimerTick(); }
@@ -270,19 +313,24 @@ function updateTimerDisplay() {
   timer.classList.remove('dfyt-snooze');
   timer.classList.toggle('dfyt-warn', remaining > 0 && remaining <= 5 * 60 * 1000);
   timer.classList.toggle('dfyt-crit', remaining <= 0);
-  txt.textContent = remaining > 0 ? fmtCountdown(remaining) : 'Done';
+  txt.textContent = remaining > 0 ? fmtCountdown(remaining) : '∞';
 
   if (remaining <= 0 && overlayDismissedDay !== todayKey()) {
     const overlay = document.getElementById('dfyt-overlay');
     const timeEl  = document.getElementById('dfyt-ov-time');
     if (overlay && overlay.style.display !== 'flex') {
       overlay.style.display = 'flex';
+      timer.style.display = 'none';
+      document.body.style.overflow = 'hidden';
       pauseSession();
       stopTimerTick();
       blockVideoPlay();
     }
     if (timeEl) timeEl.textContent = fmtUsed(totalMs);
+    return;
   }
+
+  timer.style.display = 'flex';
 }
 
 function blockVideoPlay() {
@@ -350,6 +398,7 @@ function onNavigate() {
   handleDisablePlaylists();
   applyClasses();
   if (settings.enabled !== false && settings.disableAutoplay) setTimeout(handleAutoplay, 800);
+  setTimeout(syncVideoTracking, 600);
 }
 
 document.addEventListener('yt-navigate-finish', onNavigate);
@@ -369,10 +418,12 @@ function init(s) {
       document.addEventListener('DOMContentLoaded', () => {
         handleAutoplay();
         updateTimerDisplay();
+        syncVideoTracking();
       });
     } else {
       handleAutoplay();
       updateTimerDisplay();
+      syncVideoTracking();
     }
   });
 }
@@ -381,9 +432,7 @@ chrome.storage.sync.get(SETTINGS_KEY, (result) => {
   init(result[SETTINGS_KEY] || {});
 });
 
-chrome.storage.onChanged.addListener((changes) => {
-  if (!changes[SETTINGS_KEY]) return;
-  const next = { ...DEFAULTS, ...(changes[SETTINGS_KEY].newValue || {}) };
+function applyNewSettings(next) {
   const wasEnabled = settings.enabled !== false;
   const nowEnabled = next.enabled !== false;
   settings = next;
@@ -395,4 +444,19 @@ chrome.storage.onChanged.addListener((changes) => {
   if (nowEnabled && !getLimitMs()) stopTimerTick();
   if (nowEnabled && settings.disableAutoplay) handleAutoplay();
   updateTimerDisplay();
+}
+
+chrome.storage.onChanged.addListener((changes) => {
+  if (!changes[SETTINGS_KEY]) return;
+  applyNewSettings({ ...DEFAULTS, ...(changes[SETTINGS_KEY].newValue || {}) });
+});
+
+// Direct message from popup — instant apply without waiting for storage event.
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  if (msg.type === 'ping') { sendResponse({ ok: true }); return true; }
+  if (msg.type === 'apply') {
+    applyNewSettings({ ...DEFAULTS, ...(msg.settings || {}) });
+    sendResponse({ ok: true });
+  }
+  return true;
 });

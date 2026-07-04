@@ -203,10 +203,20 @@ function renderUI(s) {
   applyTheme(theme);
 }
 
+function pushToActiveTab(s) {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (!tabs[0]) return;
+    chrome.tabs.sendMessage(tabs[0].id, { type: 'apply', settings: s }, () => {
+      void chrome.runtime.lastError;
+    });
+  });
+}
+
 function save() {
   const s = getValues();
   chrome.storage.sync.set({ [SETTINGS_KEY]: s }, showSaved);
   renderUI(s);
+  pushToActiveTab(s);
 }
 
 // ── Stats ─────────────────────────────────────────────────────
@@ -246,6 +256,27 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('shortcutChange')?.addEventListener('click', (e) => {
     e.preventDefault();
     chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+  });
+
+  // Ping the active tab's content script; show refresh banner if unreachable.
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (!tabs[0]?.url) return;
+    try {
+      const host = new URL(tabs[0].url).hostname;
+      if (host !== 'www.youtube.com' && host !== 'youtube.com') return;
+    } catch { return; }
+    chrome.tabs.sendMessage(tabs[0].id, { type: 'ping' }, () => {
+      if (chrome.runtime.lastError) {
+        const banner = document.getElementById('refreshBanner');
+        if (banner) banner.style.display = 'flex';
+      }
+    });
+  });
+
+  document.getElementById('refreshBtn')?.addEventListener('click', () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]) chrome.tabs.reload(tabs[0].id);
+    });
   });
 
   chrome.storage.sync.get(SETTINGS_KEY, (result) => {
