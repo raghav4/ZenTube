@@ -29,9 +29,10 @@ So I built this.
 | **Hide Live Chat** | Cleaner viewing on livestreams |
 | **Hide Subscriptions Tab** | Remove the entire subscriptions section from the sidebar |
 | **Disable Playlists** | Strip playlist params from URLs so videos play standalone |
-| **Grayscale Thumbnails** | Desaturate thumbnails until you hover — kills clickbait pull |
+| **Thumbnail Dimming** | Grayscale or blur thumbnails until you hover — kills clickbait pull |
+| **Disable Hover Previews** | Stop the inline video and animated preview that play when you hover a thumbnail |
 
-Toggle the whole extension on/off with a keyboard shortcut (default `Ctrl/Cmd+Shift+Y`, rebindable at `chrome://extensions/shortcuts`).
+Toggle the whole extension on/off with a keyboard shortcut (default `Ctrl/Cmd+Shift+Y`, rebindable at `chrome://extensions/shortcuts`). The popup follows your system light/dark theme, or you can force **Light**/**Dark** from the Appearance control.
 
 ### Presets
 
