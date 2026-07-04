@@ -89,22 +89,26 @@ html.dfyt-hide-comments ytd-comment-thread-renderer {
   display: none !important;
 }
 
-/* ── Grayscale Thumbnails — desaturate until hovered (reduces clickbait pull) ── */
-html.dfyt-grayscale-thumbnails ytd-thumbnail img,
-html.dfyt-grayscale-thumbnails ytd-thumbnail .yt-core-image,
-html.dfyt-grayscale-thumbnails ytd-playlist-thumbnail img,
-html.dfyt-grayscale-thumbnails yt-thumbnail-view-model img,
-html.dfyt-grayscale-thumbnails yt-lockup-view-model img,
-html.dfyt-grayscale-thumbnails ytd-rich-grid-media a#thumbnail img,
-html.dfyt-grayscale-thumbnails ytd-compact-video-renderer a#thumbnail img,
-html.dfyt-grayscale-thumbnails ytd-video-renderer a#thumbnail img {
-  filter: grayscale(1) !important;
+/* ── Thumbnail treatment — grayscale or blur, revealed on hover (cuts clickbait pull) ── */
+/* The ancestor class carries the filter value; selector list is shared via :is(). */
+html.dfyt-thumb-grayscale { --dfyt-thumb-filter: grayscale(1); }
+html.dfyt-thumb-blur { --dfyt-thumb-filter: blur(12px); }
+
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-thumbnail img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-thumbnail .yt-core-image,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-playlist-thumbnail img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) yt-thumbnail-view-model img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) yt-lockup-view-model img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-rich-grid-media a#thumbnail img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-compact-video-renderer a#thumbnail img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-video-renderer a#thumbnail img {
+  filter: var(--dfyt-thumb-filter) !important;
   transition: filter 0.2s ease !important;
 }
-html.dfyt-grayscale-thumbnails ytd-thumbnail:hover img,
-html.dfyt-grayscale-thumbnails ytd-thumbnail:hover .yt-core-image,
-html.dfyt-grayscale-thumbnails yt-thumbnail-view-model:hover img,
-html.dfyt-grayscale-thumbnails yt-lockup-view-model:hover img,
-html.dfyt-grayscale-thumbnails a#thumbnail:hover img {
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-thumbnail:hover img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-thumbnail:hover .yt-core-image,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) yt-thumbnail-view-model:hover img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) yt-lockup-view-model:hover img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) a#thumbnail:hover img {
   filter: none !important;
 }

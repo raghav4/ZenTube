@@ -17,7 +17,7 @@ const DEFAULTS = {
   hideMerch: false,
   hideComments: false,
   disablePlaylists: false,
-  grayscaleThumbnails: false,
+  thumbnailStyle: 'none', // 'none' | 'grayscale' | 'blur'
   dailyLimit: 0,
 };
 
@@ -34,7 +34,6 @@ const CLASS_MAP = {
   hideSidebarPlaylists: 'dfyt-hide-sidebar-playlists',
   hideMerch: 'dfyt-hide-merch',
   hideComments: 'dfyt-hide-comments',
-  grayscaleThumbnails: 'dfyt-grayscale-thumbnails',
 };
 
 let settings = { ...DEFAULTS };
@@ -48,6 +47,9 @@ function applyClasses() {
   for (const [key, cls] of Object.entries(CLASS_MAP)) {
     el.classList.toggle(cls, active && !!settings[key]);
   }
+  const ts = active ? (settings.thumbnailStyle || 'none') : 'none';
+  el.classList.toggle('dfyt-thumb-grayscale', ts === 'grayscale');
+  el.classList.toggle('dfyt-thumb-blur', ts === 'blur');
 }
 
 // ── Focus time tracking ────────────────────────────────────────

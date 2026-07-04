@@ -17,19 +17,20 @@ const DEFAULTS = {
   hideMerch: false,
   hideComments: false,
   disablePlaylists: false,
-  grayscaleThumbnails: false,
+  thumbnailStyle: 'none', // 'none' | 'grayscale' | 'blur'
   dailyLimit: 0,
 };
 
 const SECTIONS = {
   navigation: ['hideNotificationBell', 'hideShortsTab', 'hideSubscriptionsTab', 'showOnlyLibrary'],
-  homepage: ['hideFeed', 'hideShortsVideos', 'grayscaleThumbnails'],
+  homepage: ['hideFeed', 'hideShortsVideos'],
   watching: ['disableAutoplay', 'hideRelatedVideos', 'hideSidebarRelated', 'hideSidebarLiveChat',
              'hideSidebarPlaylists', 'hideMerch', 'hideComments', 'disablePlaylists'],
 };
 
-// dailyLimit is excluded — it's not a CSS-class toggle
-const FEATURE_KEYS = Object.keys(DEFAULTS).filter(k => k !== 'enabled' && k !== 'dailyLimit');
+// enabled/dailyLimit/thumbnailStyle are excluded — they're not CSS-class checkboxes
+const NON_TOGGLE = new Set(['enabled', 'dailyLimit', 'thumbnailStyle']);
+const FEATURE_KEYS = Object.keys(DEFAULTS).filter(k => !NON_TOGGLE.has(k));
 
 const PRESET_MINS = [0, 15, 30, 60];
 
@@ -40,21 +41,19 @@ const PRESETS = {
     hideShortsVideos: false, hideShortsTab: false, hideSubscriptionsTab: false,
     showOnlyLibrary: false, hideSidebarLiveChat: false, hideSidebarPlaylists: false,
     hideMerch: false, hideComments: false, disablePlaylists: false,
-    grayscaleThumbnails: false,
   },
   balanced: {
     disableAutoplay: true, hideSidebarRelated: true, hideRelatedVideos: true,
     hideNotificationBell: true, hideShortsTab: true, hideMerch: true,
     hideFeed: false, hideShortsVideos: false, hideSubscriptionsTab: false,
     showOnlyLibrary: false, hideSidebarLiveChat: false, hideSidebarPlaylists: false,
-    hideComments: false, disablePlaylists: false, grayscaleThumbnails: false,
+    hideComments: false, disablePlaylists: false,
   },
   zen: {
     disableAutoplay: true, hideNotificationBell: true, hideFeed: true,
     hideShortsVideos: true, hideShortsTab: true, hideSubscriptionsTab: true,
     hideRelatedVideos: true, hideSidebarRelated: true, hideSidebarLiveChat: true,
     hideSidebarPlaylists: true, hideMerch: true, hideComments: true,
-    grayscaleThumbnails: true,
     showOnlyLibrary: false, disablePlaylists: false,
   },
 };
@@ -69,8 +68,17 @@ function readLimit() {
   return 0;
 }
 
+function readThumb() {
+  const active = document.querySelector('.tpill.active');
+  return active ? (active.dataset.thumb || 'none') : 'none';
+}
+
 function getValues() {
-  const s = { enabled: document.getElementById('enabled').checked, dailyLimit: readLimit() };
+  const s = {
+    enabled: document.getElementById('enabled').checked,
+    dailyLimit: readLimit(),
+    thumbnailStyle: readThumb(),
+  };
   for (const key of FEATURE_KEYS) {
     const el = document.getElementById(key);
     s[key] = el ? el.checked : DEFAULTS[key];
@@ -155,6 +163,12 @@ function renderUI(s) {
     customEl.value = hasCustom ? limit : '';
     customEl.classList.toggle('has-value', hasCustom);
   }
+
+  // Thumbnail style pills
+  const thumb = s.thumbnailStyle || 'none';
+  document.querySelectorAll('.tpill').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.thumb === thumb);
+  });
 }
 
 function save() {
@@ -251,6 +265,15 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
       const customEl = document.getElementById('customLimitInput');
       if (customEl) { customEl.value = ''; customEl.classList.remove('has-value'); }
+      save();
+    });
+  });
+
+  // Thumbnail style pills
+  document.querySelectorAll('.tpill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tpill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
       save();
     });
   });

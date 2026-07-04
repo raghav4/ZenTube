@@ -309,7 +309,7 @@
       align-items: center;
     }
 
-    .lpill {
+    .lpill, .tpill {
       padding: 4px 8px;
       font-size: 11px;
       font-weight: 550;
@@ -323,8 +323,10 @@
       line-height: 1;
       white-space: nowrap;
     }
-    .lpill:hover { border-color: var(--border-md); color: var(--text-2); background: var(--bg-muted); }
-    .lpill.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .lpill:hover, .tpill:hover { border-color: var(--border-md); color: var(--text-2); background: var(--bg-muted); }
+    .lpill.active, .tpill.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    .tpills { display: flex; gap: 4px; align-items: center; }
 
     .lcustom {
       width: 40px;
@@ -367,7 +369,7 @@
         --green-border: #21382a;
       }
       /* Active fills use --primary (now light) — flip their text/knob to dark */
-      .preset.active, .lpill.active, .lcustom.has-value { color: #18181b; }
+      .preset.active, .lpill.active, .tpill.active, .lcustom.has-value { color: #18181b; }
       .lcustom.has-value::placeholder { color: rgba(0,0,0,.45); }
       .sw input:checked + .sw-track::after { background: #18181b; }
       .stat-text { color: #86efac; }
@@ -496,13 +498,17 @@
       </span>
       <span class="sw"><input type="checkbox" id="hideShortsVideos"><span class="sw-track"></span></span>
     </label>
-    <label class="row">
+    <div class="row" style="cursor:default;">
       <span class="row-lbl">
         <svg class="row-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        Grayscale Thumbnails
+        Thumbnails
       </span>
-      <span class="sw"><input type="checkbox" id="grayscaleThumbnails"><span class="sw-track"></span></span>
-    </label>
+      <div class="tpills">
+        <button class="tpill" data-thumb="none">None</button>
+        <button class="tpill" data-thumb="grayscale">Gray</button>
+        <button class="tpill" data-thumb="blur">Blur</button>
+      </div>
+    </div>
   </div>
 
   <div class="card">
