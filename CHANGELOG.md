@@ -2,17 +2,22 @@
 
 All notable changes to ZenTube are documented here.
 
-## [1.1.1] — 2026-07-04
+## [1.1.2] — 2026-07-04
 
 ### Fixes
 
-- **Limit overlay — Snooze instead of all-day dismiss** — "Keep watching anyway" used to disable the daily wall for the rest of the day. It's now a **Snooze 5 min** button: the overlay hides, you get five more minutes (shown as a countdown in the timer pill), and then the wall returns. A quieter "I'm done for today" link still lets you fully dismiss when you actually mean it.
 - **Live toggle** — changing any setting in the popup now applies instantly to the active YouTube tab without a page refresh. The popup sends settings directly to the content script as a fast path on top of the existing storage event.
 - **Refresh tab notice** — if the content script is unreachable (e.g. the extension was reloaded while the tab was open), the popup shows a "Refresh this tab to activate ZenTube" banner with a one-click Refresh button.
 - **Video-aware timer** — on watch pages, the countdown only ticks while the video is actually playing. Pausing pauses your limit; switching tabs while something plays keeps counting.
 - **Overlay scrollbar** — the page body is now scroll-locked while the limit wall is visible. No more background scrollbar peeking through.
 - **Timer pill hidden during overlay** — the countdown pill no longer floats over the limit wall; it hides when the wall appears and reappears once dismissed.
 - **Limit indicator** — when the daily limit is reached, the pill shows `∞` with a slow breathing animation instead of a static "Done" label.
+
+## [1.1.1] — 2026-07-04
+
+### Fixes
+
+- **Limit overlay — Snooze instead of all-day dismiss** — "Keep watching anyway" used to disable the daily wall for the rest of the day. It's now a **Snooze 5 min** button: the overlay hides, you get five more minutes (shown as a countdown in the timer pill), and then the wall returns. A quieter "I'm done for today" link still lets you fully dismiss when you actually mean it.
 
 ## [1.1.0] — 2026-07-04
 
