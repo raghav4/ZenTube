@@ -2,6 +2,12 @@
 
 All notable changes to ZenTube are documented here.
 
+## [1.1.1] — 2026-07-04
+
+### Fixes
+
+- **Limit overlay — Snooze instead of all-day dismiss** — "Keep watching anyway" used to disable the daily wall for the rest of the day. It's now a **Snooze 5 min** button: the overlay hides, you get five more minutes (shown as a countdown in the timer pill), and then the wall returns. A quieter "I'm done for today" link still lets you fully dismiss when you actually mean it.
+
 ## [1.1.0] — 2026-07-04
 
 ### Features
