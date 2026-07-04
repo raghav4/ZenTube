@@ -20,6 +20,7 @@ const DEFAULTS = {
   disableHoverPreview: false,
   thumbnailStyle: 'none', // 'none' | 'grayscale' | 'blur'
   dailyLimit: 0,
+  theme: 'auto', // popup appearance: 'auto' | 'light' | 'dark'
 };
 
 const SECTIONS = {
@@ -29,9 +30,24 @@ const SECTIONS = {
              'hideSidebarPlaylists', 'hideMerch', 'hideComments', 'disablePlaylists'],
 };
 
-// enabled/dailyLimit/thumbnailStyle are excluded — they're not CSS-class checkboxes
-const NON_TOGGLE = new Set(['enabled', 'dailyLimit', 'thumbnailStyle']);
+// enabled/dailyLimit/thumbnailStyle/theme are excluded — they're not CSS-class checkboxes
+const NON_TOGGLE = new Set(['enabled', 'dailyLimit', 'thumbnailStyle', 'theme']);
 const FEATURE_KEYS = Object.keys(DEFAULTS).filter(k => !NON_TOGGLE.has(k));
+
+// ── Theme ─────────────────────────────────────────────────────
+const darkMql = window.matchMedia('(prefers-color-scheme: dark)');
+let currentTheme = 'auto';
+
+function applyTheme(theme) {
+  currentTheme = theme || 'auto';
+  const resolved = currentTheme === 'auto'
+    ? (darkMql.matches ? 'dark' : 'light')
+    : currentTheme;
+  document.documentElement.dataset.theme = resolved;
+}
+
+// Re-resolve when the OS theme changes and we're following it.
+darkMql.addEventListener('change', () => { if (currentTheme === 'auto') applyTheme('auto'); });
 
 const PRESET_MINS = [0, 15, 30, 60];
 
@@ -76,11 +92,17 @@ function readThumb() {
   return active ? (active.dataset.thumb || 'none') : 'none';
 }
 
+function readTheme() {
+  const active = document.querySelector('.thpill.active');
+  return active ? (active.dataset.themeOpt || 'auto') : 'auto';
+}
+
 function getValues() {
   const s = {
     enabled: document.getElementById('enabled').checked,
     dailyLimit: readLimit(),
     thumbnailStyle: readThumb(),
+    theme: readTheme(),
   };
   for (const key of FEATURE_KEYS) {
     const el = document.getElementById(key);
@@ -106,12 +128,12 @@ function fmtMs(ms) {
 
 function showSaved() {
   const el = document.getElementById('savedMsg');
-  const nudge = document.getElementById('supportNudge');
+  const note = document.getElementById('privacyNote');
   el.classList.add('show');
-  if (nudge) nudge.style.opacity = '0';
+  if (note) note.style.opacity = '0';
   setTimeout(() => {
     el.classList.remove('show');
-    if (nudge) nudge.style.opacity = '1';
+    if (note) note.style.opacity = '1';
   }, 1600);
 }
 
@@ -172,6 +194,13 @@ function renderUI(s) {
   document.querySelectorAll('.tpill').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.thumb === thumb);
   });
+
+  // Theme pills + apply
+  const theme = s.theme || 'auto';
+  document.querySelectorAll('.thpill').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.themeOpt === theme);
+  });
+  applyTheme(theme);
 }
 
 function save() {
@@ -277,6 +306,16 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tpill').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      save();
+    });
+  });
+
+  // Theme pills
+  document.querySelectorAll('.thpill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.thpill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyTheme(btn.dataset.themeOpt);
       save();
     });
   });
