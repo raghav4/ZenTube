@@ -6,7 +6,8 @@
   "minimum_chrome_version": "105",
   "homepage_url": "https://raghav4.github.io/ZenTube/",
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab"
   ],
   "host_permissions": [
     "*://*.youtube.com/*"
