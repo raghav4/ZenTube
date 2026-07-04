@@ -2,6 +2,21 @@
 
 All notable changes to ZenTube are documented here.
 
+## [1.1.0] — 2026-07-04
+
+### Features
+
+- **Thumbnail Dimming** — grayscale or blur feed, search, and sidebar thumbnails until you hover, so clickbait stops pulling your eye. Choose None, Grayscale, or Blur.
+- **Disable Hover Previews** — stops the inline video and animated-thumbnail preview that auto-play when the cursor lingers on a thumbnail.
+- **Keyboard Shortcut** — toggle ZenTube on or off with a hotkey (default `Ctrl/Cmd+Shift+Y`, rebindable at `chrome://extensions/shortcuts`). The popup shows the live binding.
+- **Appearance Control** — Auto / Light / Dark popup theme. Auto follows your system, so no more bright flash at night.
+
+### Improvements
+
+- **Privacy, stated up front** — the popup, landing page, and README now make it clear that nothing leaves your device: no analytics, no accounts, no servers, and the only permission requested is YouTube.
+- **Cleaner popup** — the footer was redesigned from a cluttered stack into a compact layout.
+- Removed the "Unstable" tag from Hide Shorts Videos.
+
 ## [1.0.0] — 2026-05-30
 
 ### Features
