@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ZenTube",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A distraction-free YouTube experience",
   "minimum_chrome_version": "105",
   "homepage_url": "https://raghav4.github.io/ZenTube/",

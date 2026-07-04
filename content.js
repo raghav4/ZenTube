@@ -135,6 +135,7 @@ setInterval(() => {
 // ── Daily limit & timer ────────────────────────────────────────
 
 let overlayDismissedDay = null;
+let snoozeUntilMs = 0;
 let timerTickId = null;
 let videoPlayBlocker = null;
 
@@ -160,6 +161,7 @@ const INJECTED_CSS = `
 #dfyt-timer{position:fixed;bottom:22px;right:22px;z-index:2147483646;background:rgba(0,0,0,.72);color:#fff;padding:6px 13px 6px 10px;border-radius:100px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:13px;font-weight:600;letter-spacing:-.2px;display:flex;align-items:center;gap:6px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 2px 16px rgba(0,0,0,.3);transition:background .4s;user-select:none;pointer-events:none}
 #dfyt-timer.dfyt-warn{background:rgba(180,83,9,.88)}
 #dfyt-timer.dfyt-crit{background:rgba(185,28,28,.92)}
+#dfyt-timer.dfyt-snooze{background:rgba(120,53,15,.9)}
 #dfyt-overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 #dfyt-ov-inner{display:flex;flex-direction:column;align-items:center;text-align:center;color:#fff;padding:48px 40px;max-width:380px}
 #dfyt-ov-logo{margin-bottom:28px;opacity:.9}
@@ -167,8 +169,11 @@ const INJECTED_CSS = `
 #dfyt-ov-time{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:64px;font-weight:800;letter-spacing:-3px;color:#fff;line-height:1;margin:16px 0 4px}
 #dfyt-ov-time-lbl{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:28px}
 #dfyt-ov-sub{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:15px;color:rgba(255,255,255,.45);margin:0 0 32px;line-height:1.65}
-#dfyt-ov-dismiss{background:transparent;color:rgba(220,80,80,.7);border:1px solid rgba(220,80,80,.25);border-radius:8px;padding:10px 22px;font-size:13px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-weight:500;cursor:pointer;transition:all .15s;pointer-events:all}
-#dfyt-ov-dismiss:hover{color:rgba(220,80,80,1);border-color:rgba(220,80,80,.5);background:rgba(220,80,80,.08)}
+#dfyt-ov-actions{display:flex;flex-direction:column;align-items:center;gap:0;width:100%}
+#dfyt-ov-snooze{background:#fff;color:#111;border:none;border-radius:8px;padding:12px 32px;font-size:14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-weight:600;cursor:pointer;transition:background .15s,transform .15s;pointer-events:all}
+#dfyt-ov-snooze:hover{background:rgba(255,255,255,.88);transform:translateY(-1px)}
+#dfyt-ov-dismiss{background:transparent;color:rgba(255,255,255,.2);border:none;padding:8px 16px;font-size:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-weight:400;cursor:pointer;transition:color .15s;pointer-events:all;margin-top:6px}
+#dfyt-ov-dismiss:hover{color:rgba(255,255,255,.45)}
 `;
 
 function ensureTimerUI() {
@@ -201,12 +206,24 @@ function ensureTimerUI() {
       <div id="dfyt-ov-time"></div>
       <div id="dfyt-ov-time-lbl">watched today</div>
       <p id="dfyt-ov-sub">You've hit your daily YouTube limit.<br>Good job for setting one.</p>
-      <button id="dfyt-ov-dismiss">Keep watching anyway :(</button>
+      <div id="dfyt-ov-actions">
+        <button id="dfyt-ov-snooze">Snooze 5 min</button>
+        <button id="dfyt-ov-dismiss">I'm done for today</button>
+      </div>
     </div>`;
   document.body.appendChild(overlay);
 
+  document.getElementById('dfyt-ov-snooze').addEventListener('click', () => {
+    snoozeUntilMs = Date.now() + 5 * 60 * 1000;
+    document.getElementById('dfyt-overlay').style.display = 'none';
+    unblockVideoPlay();
+    document.querySelector('video')?.play();
+    if (isTracking()) { startSession(); startTimerTick(); }
+  });
+
   document.getElementById('dfyt-ov-dismiss').addEventListener('click', () => {
     overlayDismissedDay = todayKey();
+    snoozeUntilMs = 0;
     document.getElementById('dfyt-overlay').style.display = 'none';
     unblockVideoPlay();
     document.querySelector('video')?.play();
@@ -237,8 +254,20 @@ function updateTimerDisplay() {
 
   const totalMs   = getTotalTodayMs();
   const remaining = limitMs - totalMs;
+  const now = Date.now();
+  const snoozing = snoozeUntilMs > now;
 
   timer.style.display = 'flex';
+
+  if (snoozing) {
+    const snoozeLeft = snoozeUntilMs - now;
+    txt.textContent = `Snooze ${fmtCountdown(snoozeLeft)}`;
+    timer.classList.remove('dfyt-warn', 'dfyt-crit');
+    timer.classList.add('dfyt-snooze');
+    return;
+  }
+
+  timer.classList.remove('dfyt-snooze');
   timer.classList.toggle('dfyt-warn', remaining > 0 && remaining <= 5 * 60 * 1000);
   timer.classList.toggle('dfyt-crit', remaining <= 0);
   txt.textContent = remaining > 0 ? fmtCountdown(remaining) : 'Done';
