@@ -17,13 +17,14 @@ const DEFAULTS = {
   hideMerch: false,
   hideComments: false,
   disablePlaylists: false,
+  disableHoverPreview: false,
   thumbnailStyle: 'none', // 'none' | 'grayscale' | 'blur'
   dailyLimit: 0,
 };
 
 const SECTIONS = {
   navigation: ['hideNotificationBell', 'hideShortsTab', 'hideSubscriptionsTab', 'showOnlyLibrary'],
-  homepage: ['hideFeed', 'hideShortsVideos'],
+  homepage: ['hideFeed', 'hideShortsVideos', 'disableHoverPreview'],
   watching: ['disableAutoplay', 'hideRelatedVideos', 'hideSidebarRelated', 'hideSidebarLiveChat',
              'hideSidebarPlaylists', 'hideMerch', 'hideComments', 'disablePlaylists'],
 };
@@ -41,19 +42,21 @@ const PRESETS = {
     hideShortsVideos: false, hideShortsTab: false, hideSubscriptionsTab: false,
     showOnlyLibrary: false, hideSidebarLiveChat: false, hideSidebarPlaylists: false,
     hideMerch: false, hideComments: false, disablePlaylists: false,
+    disableHoverPreview: false,
   },
   balanced: {
     disableAutoplay: true, hideSidebarRelated: true, hideRelatedVideos: true,
     hideNotificationBell: true, hideShortsTab: true, hideMerch: true,
     hideFeed: false, hideShortsVideos: false, hideSubscriptionsTab: false,
     showOnlyLibrary: false, hideSidebarLiveChat: false, hideSidebarPlaylists: false,
-    hideComments: false, disablePlaylists: false,
+    hideComments: false, disablePlaylists: false, disableHoverPreview: false,
   },
   zen: {
     disableAutoplay: true, hideNotificationBell: true, hideFeed: true,
     hideShortsVideos: true, hideShortsTab: true, hideSubscriptionsTab: true,
     hideRelatedVideos: true, hideSidebarRelated: true, hideSidebarLiveChat: true,
     hideSidebarPlaylists: true, hideMerch: true, hideComments: true,
+    disableHoverPreview: true,
     showOnlyLibrary: false, disablePlaylists: false,
   },
 };

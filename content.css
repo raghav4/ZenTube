@@ -89,6 +89,14 @@ html.dfyt-hide-comments ytd-comment-thread-renderer {
   display: none !important;
 }
 
+/* ── Hover Previews — stop inline video playback + animated thumbnail on hover ── */
+html.dfyt-no-hover-preview ytd-video-preview,
+html.dfyt-no-hover-preview #video-preview,
+html.dfyt-no-hover-preview #mouseover-overlay,
+html.dfyt-no-hover-preview ytd-moving-thumbnail-renderer {
+  display: none !important;
+}
+
 /* ── Thumbnail treatment — grayscale or blur, revealed on hover (cuts clickbait pull) ── */
 /* The ancestor class carries the filter value; selector list is shared via :is(). */
 html.dfyt-thumb-grayscale { --dfyt-thumb-filter: grayscale(1); }
