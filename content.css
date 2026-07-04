@@ -88,3 +88,34 @@ html.dfyt-hide-comments ytd-comments,
 html.dfyt-hide-comments ytd-comment-thread-renderer {
   display: none !important;
 }
+
+/* ── Hover Previews — stop inline video playback + animated thumbnail on hover ── */
+html.dfyt-no-hover-preview ytd-video-preview,
+html.dfyt-no-hover-preview #video-preview,
+html.dfyt-no-hover-preview #mouseover-overlay,
+html.dfyt-no-hover-preview ytd-moving-thumbnail-renderer {
+  display: none !important;
+}
+
+/* ── Thumbnail treatment — grayscale or blur, revealed on hover (cuts clickbait pull) ── */
+/* The ancestor class carries the filter value; selector list is shared via :is().
+   Primary selector is layout-independent: any <img> inside a /watch or /shorts
+   link is a video thumbnail on every page (home, search, sidebar, channel),
+   regardless of YouTube's changing component tags. Container tags kept as backup. */
+html.dfyt-thumb-grayscale { --dfyt-thumb-filter: grayscale(1); }
+html.dfyt-thumb-blur { --dfyt-thumb-filter: blur(12px); }
+
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) a[href^="/watch"] img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) a[href^="/shorts"] img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-thumbnail img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) yt-thumbnail-view-model img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-playlist-thumbnail img {
+  filter: var(--dfyt-thumb-filter) !important;
+  transition: filter 0.2s ease !important;
+}
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) a[href^="/watch"]:hover img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) a[href^="/shorts"]:hover img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) ytd-thumbnail:hover img,
+html:is(.dfyt-thumb-grayscale, .dfyt-thumb-blur) yt-thumbnail-view-model:hover img {
+  filter: none !important;
+}

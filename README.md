@@ -29,6 +29,10 @@ So I built this.
 | **Hide Live Chat** | Cleaner viewing on livestreams |
 | **Hide Subscriptions Tab** | Remove the entire subscriptions section from the sidebar |
 | **Disable Playlists** | Strip playlist params from URLs so videos play standalone |
+| **Thumbnail Dimming** | Grayscale or blur thumbnails until you hover — kills clickbait pull |
+| **Disable Hover Previews** | Stop the inline video and animated preview that play when you hover a thumbnail |
+
+Toggle the whole extension on/off with a keyboard shortcut (default `Ctrl/Cmd+Shift+Y`, rebindable at `chrome://extensions/shortcuts`). The popup follows your system light/dark theme, or you can force **Light**/**Dark** from the Appearance control.
 
 ### Presets
 
@@ -39,6 +43,14 @@ So I built this.
 ### Focus tracking
 
 ZenTube tracks how long you're on YouTube and shows it in the popup: *"42 min focused today · 3 hr 10 min total."*
+
+---
+
+## Privacy
+
+Everything stays in your browser. No analytics, no accounts, no servers — the only permission ZenTube requests is access to YouTube, and there's no network code to send anything anywhere. Your settings and focus stats never leave your device.
+
+Full details: [Privacy Policy](https://raghav4.github.io/ZenTube/privacy.html).
 
 ---
 
@@ -91,6 +103,7 @@ GitHub Actions handles the rest: zips the extension and attaches it to the GitHu
 manifest.json       MV3 manifest
 content.js          Content script — class toggling, timer, tracking
 content.css         CSS rules keyed on html.dfyt-* classes
+background.js       Service worker — keyboard toggle command + icon sync
 popup.html/js       Extension popup UI
 generate-icons.js   Pure-Node PNG icon generator (no canvas)
 scripts/            Release helper scripts

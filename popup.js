@@ -17,18 +17,37 @@ const DEFAULTS = {
   hideMerch: false,
   hideComments: false,
   disablePlaylists: false,
+  disableHoverPreview: false,
+  thumbnailStyle: 'none', // 'none' | 'grayscale' | 'blur'
   dailyLimit: 0,
+  theme: 'auto', // popup appearance: 'auto' | 'light' | 'dark'
 };
 
 const SECTIONS = {
   navigation: ['hideNotificationBell', 'hideShortsTab', 'hideSubscriptionsTab', 'showOnlyLibrary'],
-  homepage: ['hideFeed', 'hideShortsVideos'],
+  homepage: ['hideFeed', 'hideShortsVideos', 'disableHoverPreview'],
   watching: ['disableAutoplay', 'hideRelatedVideos', 'hideSidebarRelated', 'hideSidebarLiveChat',
              'hideSidebarPlaylists', 'hideMerch', 'hideComments', 'disablePlaylists'],
 };
 
-// dailyLimit is excluded — it's not a CSS-class toggle
-const FEATURE_KEYS = Object.keys(DEFAULTS).filter(k => k !== 'enabled' && k !== 'dailyLimit');
+// enabled/dailyLimit/thumbnailStyle/theme are excluded — they're not CSS-class checkboxes
+const NON_TOGGLE = new Set(['enabled', 'dailyLimit', 'thumbnailStyle', 'theme']);
+const FEATURE_KEYS = Object.keys(DEFAULTS).filter(k => !NON_TOGGLE.has(k));
+
+// ── Theme ─────────────────────────────────────────────────────
+const darkMql = window.matchMedia('(prefers-color-scheme: dark)');
+let currentTheme = 'auto';
+
+function applyTheme(theme) {
+  currentTheme = theme || 'auto';
+  const resolved = currentTheme === 'auto'
+    ? (darkMql.matches ? 'dark' : 'light')
+    : currentTheme;
+  document.documentElement.dataset.theme = resolved;
+}
+
+// Re-resolve when the OS theme changes and we're following it.
+darkMql.addEventListener('change', () => { if (currentTheme === 'auto') applyTheme('auto'); });
 
 const PRESET_MINS = [0, 15, 30, 60];
 
@@ -39,19 +58,21 @@ const PRESETS = {
     hideShortsVideos: false, hideShortsTab: false, hideSubscriptionsTab: false,
     showOnlyLibrary: false, hideSidebarLiveChat: false, hideSidebarPlaylists: false,
     hideMerch: false, hideComments: false, disablePlaylists: false,
+    disableHoverPreview: false,
   },
   balanced: {
     disableAutoplay: true, hideSidebarRelated: true, hideRelatedVideos: true,
     hideNotificationBell: true, hideShortsTab: true, hideMerch: true,
     hideFeed: false, hideShortsVideos: false, hideSubscriptionsTab: false,
     showOnlyLibrary: false, hideSidebarLiveChat: false, hideSidebarPlaylists: false,
-    hideComments: false, disablePlaylists: false,
+    hideComments: false, disablePlaylists: false, disableHoverPreview: false,
   },
   zen: {
     disableAutoplay: true, hideNotificationBell: true, hideFeed: true,
     hideShortsVideos: true, hideShortsTab: true, hideSubscriptionsTab: true,
     hideRelatedVideos: true, hideSidebarRelated: true, hideSidebarLiveChat: true,
     hideSidebarPlaylists: true, hideMerch: true, hideComments: true,
+    disableHoverPreview: true,
     showOnlyLibrary: false, disablePlaylists: false,
   },
 };
@@ -66,8 +87,23 @@ function readLimit() {
   return 0;
 }
 
+function readThumb() {
+  const active = document.querySelector('.tpill.active');
+  return active ? (active.dataset.thumb || 'none') : 'none';
+}
+
+function readTheme() {
+  const active = document.querySelector('.thpill.active');
+  return active ? (active.dataset.themeOpt || 'auto') : 'auto';
+}
+
 function getValues() {
-  const s = { enabled: document.getElementById('enabled').checked, dailyLimit: readLimit() };
+  const s = {
+    enabled: document.getElementById('enabled').checked,
+    dailyLimit: readLimit(),
+    thumbnailStyle: readThumb(),
+    theme: readTheme(),
+  };
   for (const key of FEATURE_KEYS) {
     const el = document.getElementById(key);
     s[key] = el ? el.checked : DEFAULTS[key];
@@ -92,12 +128,12 @@ function fmtMs(ms) {
 
 function showSaved() {
   const el = document.getElementById('savedMsg');
-  const nudge = document.getElementById('supportNudge');
+  const note = document.getElementById('privacyNote');
   el.classList.add('show');
-  if (nudge) nudge.style.opacity = '0';
+  if (note) note.style.opacity = '0';
   setTimeout(() => {
     el.classList.remove('show');
-    if (nudge) nudge.style.opacity = '1';
+    if (note) note.style.opacity = '1';
   }, 1600);
 }
 
@@ -152,6 +188,19 @@ function renderUI(s) {
     customEl.value = hasCustom ? limit : '';
     customEl.classList.toggle('has-value', hasCustom);
   }
+
+  // Thumbnail style pills
+  const thumb = s.thumbnailStyle || 'none';
+  document.querySelectorAll('.tpill').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.thumb === thumb);
+  });
+
+  // Theme pills + apply
+  const theme = s.theme || 'auto';
+  document.querySelectorAll('.thpill').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.themeOpt === theme);
+  });
+  applyTheme(theme);
 }
 
 function save() {
@@ -178,9 +227,27 @@ function loadStats() {
   });
 }
 
+// ── Keyboard shortcut hint ────────────────────────────────────
+
+function renderShortcut() {
+  const hint = document.getElementById('shortcutHint');
+  const keys = document.getElementById('shortcutKeys');
+  if (!hint || !keys || !chrome.commands?.getAll) { if (hint) hint.style.display = 'none'; return; }
+  chrome.commands.getAll((cmds) => {
+    const cmd = cmds.find(c => c.name === 'toggle-enabled');
+    keys.textContent = cmd && cmd.shortcut ? cmd.shortcut : 'Not set';
+  });
+}
+
 // ── Boot ──────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
+  renderShortcut();
+  document.getElementById('shortcutChange')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+  });
+
   chrome.storage.sync.get(SETTINGS_KEY, (result) => {
     renderUI({ ...DEFAULTS, ...(result[SETTINGS_KEY] || {}) });
   });
@@ -230,6 +297,25 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
       const customEl = document.getElementById('customLimitInput');
       if (customEl) { customEl.value = ''; customEl.classList.remove('has-value'); }
+      save();
+    });
+  });
+
+  // Thumbnail style pills
+  document.querySelectorAll('.tpill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tpill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      save();
+    });
+  });
+
+  // Theme pills
+  document.querySelectorAll('.thpill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.thpill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyTheme(btn.dataset.themeOpt);
       save();
     });
   });
