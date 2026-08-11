@@ -455,6 +455,8 @@
     .release-body ul { padding-left: 18px; margin: 0; }
     .release-body li { margin-bottom: 3px; }
     .release-body p { margin: 0; }
+    .release-body a { color: inherit; text-underline-offset: 2px; }
+    .release-body a:hover { color: var(--gray); }
 
     .changelog-more { margin-top: 28px; font-size: 13px; }
     .changelog-more a { color: var(--gray); text-decoration: none; }
@@ -1148,7 +1150,14 @@
     if (!md) return '';
     const lines = md.split('\n');
     let html = '', inList = false;
-    const inline = s => s
+    const escapeHtml = s => s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+    const inline = s => escapeHtml(s)
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/`([^`]+)`/g, '<code style="font-size:12px;background:#f3f4f6;padding:1px 5px;border-radius:4px;font-family:monospace">$1</code>');
 
@@ -1160,7 +1169,7 @@
       // sub-section heading (### Features)
       if (/^###\s+/.test(line)) {
         if (inList) { html += '</ul>'; inList = false; }
-        html += `<p style="font-weight:650;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#9ca3af;margin:14px 0 6px">${line.replace(/^###\s+/, '')}</p>`;
+        html += `<p style="font-weight:650;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#9ca3af;margin:14px 0 6px">${escapeHtml(line.replace(/^###\s+/, ''))}</p>`;
         continue;
       }
       // bullet list item
