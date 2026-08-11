@@ -6,9 +6,11 @@
   "scripts": {
     "icons": "node generate-icons.js",
     "package": "zip -r zentube.zip manifest.json content.js content.css popup.html popup.js background.js icons/ --exclude '*.DS_Store'",
+    "test": "playwright test",
     "release": "release-it"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "@release-it/conventional-changelog": "^11.0.1",
     "release-it": "^20.2.0"
   }
