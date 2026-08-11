@@ -2,6 +2,13 @@
 
 All notable changes to ZenTube are documented here.
 
+
+## [1.1.3](https://github.com/raghav4/ZenTube/compare/v1.1.2...v1.1.3) (2026-08-11)
+
+### Bug Fixes
+
+* **popup:** constrain popup document width ([#9](https://github.com/raghav4/ZenTube/issues/9)) ([850ef18](https://github.com/raghav4/ZenTube/commit/850ef183152c1f16b3a03cf4d56eb7f610ce2fc0))
+
 ## [1.1.2] — 2026-07-04
 
 ### Fixes
