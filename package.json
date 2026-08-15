@@ -10,8 +10,8 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.0",
-    "@release-it/conventional-changelog": "^11.0.1",
-    "release-it": "^20.2.0"
+    "@playwright/test": "^1.62.1",
+    "@release-it/conventional-changelog": "^12.0.0",
+    "release-it": "^21.0.2"
   }
 }
