@@ -38,7 +38,8 @@
         "*://*.youtube.com/*"
       ],
       "js": [
-        "content.js"
+        "content.js",
+        "rating.js"
       ],
       "css": [
         "content.css"

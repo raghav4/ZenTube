@@ -5,5 +5,11 @@ module.exports = defineConfig({
   use: {
     headless: true,
     viewport: { width: 800, height: 600 },
+    baseURL: 'http://localhost:3000',
+  },
+  webServer: {
+    command: 'node tests/server.js',
+    url: 'http://localhost:3000/tests/rating-harness.html',
+    reuseExistingServer: true,
   },
 });
