@@ -2,6 +2,7 @@
 // Content scripts can't receive chrome.commands, so this lives here.
 
 const SETTINGS_KEY = 'dfyt_settings';
+const RATING_KEY = 'dfyt_rating';
 
 function setActionIcon(enabled) {
   const sfx = enabled ? '-on' : '';
@@ -30,4 +31,16 @@ chrome.commands.onCommand.addListener((command) => {
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'sync' || !changes[SETTINGS_KEY]) return;
   setActionIcon(changes[SETTINGS_KEY].newValue?.enabled !== false);
+});
+
+// Seed the rating request install timestamp once.
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason !== 'install' && details.reason !== 'update') return;
+  chrome.storage.local.get(RATING_KEY, (res) => {
+    const rating = res[RATING_KEY] || {};
+    if (rating.installedAt) return;
+    chrome.storage.local.set({
+      [RATING_KEY]: { ...rating, installedAt: Date.now() },
+    });
+  });
 });

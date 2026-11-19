@@ -5,7 +5,7 @@
   "description": "Distraction-free YouTube Chrome extension",
   "scripts": {
     "icons": "node generate-icons.js",
-    "package": "zip -r zentube.zip manifest.json content.js content.css popup.html popup.js background.js icons/ --exclude '*.DS_Store'",
+    "package": "zip -r zentube.zip manifest.json content.js content.css rating.js popup.html popup.js background.js icons/ --exclude '*.DS_Store' --exclude '*.pem' --exclude '*.key' --exclude '*.p12'",
     "test": "playwright test",
     "release": "release-it"
   },
