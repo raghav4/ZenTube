@@ -56,3 +56,19 @@ test('keeps every popup control inside its document', async ({ page }) => {
 
   expect(overflow).toEqual([]);
 });
+
+test('footer links out to rating, GitHub, and contact', async ({ page }) => {
+  const footer = page.locator('.footer');
+  await expect(footer.locator('.rate-link')).toHaveAttribute(
+    'href',
+    'https://chromewebstore.google.com/detail/zentube/ljnjkcelmlkcdcghffobikpjlefjaldh/reviews',
+  );
+  await expect(footer.locator('.rate')).toContainText('Enjoying ZenTube?');
+  await expect(footer.locator('a[href="https://github.com/raghav4/ZenTube"]')).toContainText('GitHub');
+  await expect(footer.locator('a[href="mailto:hey@raghavsharma.me"]')).toContainText('Contact');
+});
+
+test('footer is roomier than the old compact footer', async ({ page }) => {
+  const height = await page.locator('.footer').evaluate(el => el.getBoundingClientRect().height);
+  expect(height).toBeGreaterThan(140);
+});
